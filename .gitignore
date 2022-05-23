@@ -1,0 +1,4 @@
+tcs/out/
+tcs/out/**/*
+__pycache__/
+*.out
