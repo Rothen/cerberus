@@ -6,7 +6,6 @@ import RPi.GPIO as GPIO
 from mcp3008 import MCP3008
 # from tcs_bus_reader import TCSBusReader
 import ctypes
-from ctypes import cdll
 import pathlib
 
 GPIO.setmode(GPIO.BCM)

@@ -213,38 +213,3 @@ extern "C" {
 	// __declspec(dllexport) void fit_tree(DecisionTree* d_tree, double **arr, int n_rows, int n_cols, bool printTree) { d_tree->fit(arr, n_rows, n_cols, printTree); }
 	// __declspec(dllexport) size_t* predict(DecisionTree *d_tree, double **arr, int n_rows, int n_cols){ return d_tree->predict_data(arr, n_rows, n_cols); }
 }
-
-/*#include "MCP3008/src/MCP3008.cpp"
-using namespace MCP3008Lib;
-
-int main()
-{
-    MCP3008 adc;
-    adc.connect();
-
-    wiringPiSetup();
-    pinMode(3, OUTPUT);
-    TCSBusReader tcsReader(0);
-    tcsReader.begin();
-
-    for (;;)
-    {
-        digitalWrite(3, adc.read(0) >= 300);
-
-        if (tcsReader.hasCommand())
-        {
-            uint32_t cmd = tcsReader.read();
-
-            std::cout << "TCS Bus: 0x";
-            printHEX(cmd);
-            std::cout << '\n';
-
-            char byte_cmd[9];
-            sprintf(byte_cmd, "%08x", cmd);
-        }
-    }
-
-    // 0x109E8180;
-    // 0x109e8180;
-    return 0;
-}*/
