@@ -1,20 +1,8 @@
-#include "tcs_bus.h"
+#include "tcs_bus_reader.h"
 
 volatile uint32_t TCSBusReader::s_cmd = 0;
 volatile uint8_t TCSBusReader::s_cmdLength = 0;
 volatile bool TCSBusReader::s_cmdReady = false;
-
-void printHEX(uint32_t data)
-{
-    uint8_t numChars = data > 0xFFFF ? 8 : 4;
-    uint32_t mask = 0x0000000F;
-    mask = mask << 4 * (numChars - 1);
-    for (uint32_t i = numChars; i > 0; --i)
-    {
-        std::cout << std::hex << ((data & mask) >> (i - 1) * 4);
-        mask = mask >> 4;
-    }
-}
 
 TCSBusReader::TCSBusReader(uint8_t readPin)
     : m_readPin(readPin),
@@ -126,7 +114,7 @@ void TCSBusReader::analyzeCMD()
         {
             if (curBit)
             {
-                curCMD |= (1UL << (curLength ? 33 : 17) - curPos);
+                curCMD |= (1UL << ((curLength ? 33 : 17) - curPos));
             }
             calCRC ^= curBit;
             curPos++;
@@ -180,36 +168,4 @@ void TCSBusReader::analyzeCMD()
         curCMD = 0;
         curPos = 0;
     }
-}
-
-
-extern "C" {
-    TCSBusReader *tcsBusReader;
-
-    int setup(uint8_t readPin) {
-        wiringPiSetup();
-		return 0;
-	}
-
-    int new_tcs_bus_reader(uint8_t readPin) {
-		tcsBusReader = new TCSBusReader(readPin);
-		return 0;
-	}
-
-    int begin(uint8_t readPin) {
-		tcsBusReader->begin();
-		return 0;
-	}
-
-    bool hasCommand() {
-		return tcsBusReader->hasCommand();
-    }
-
-    uint32_t read() {
-		return tcsBusReader->read();
-    }
-    
-
-	// __declspec(dllexport) void fit_tree(DecisionTree* d_tree, double **arr, int n_rows, int n_cols, bool printTree) { d_tree->fit(arr, n_rows, n_cols, printTree); }
-	// __declspec(dllexport) size_t* predict(DecisionTree *d_tree, double **arr, int n_rows, int n_cols){ return d_tree->predict_data(arr, n_rows, n_cols); }
 }

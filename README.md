@@ -1,0 +1,1 @@
+g++ -O3 -Wall -shared -fPIC $(python3 -m pybind11 --includes) tcs/tcs_bus_reader.cpp tcs/tcs_bus_writer.cpp tcs/tcs_bus.cpp -o door_bell/tcs_bus$(python3-config --extension-suffix) -lwiringPi -llgpio

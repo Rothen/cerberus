@@ -1,4 +1,5 @@
 tcs/out/
 tcs/out/**/*
+*.so
 __pycache__/
 *.out
