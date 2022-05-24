@@ -26,15 +26,6 @@ class MCP3008:
         result |= (resp[1] & 0xFF) << 1
         result |= (resp[2] & 0x80) >> 7
         return result & 0x3FF
-        
-
-
-        cmd1 = 4 | 2 | (( channel & 4) >> 2)
-        cmd2 = (channel & 3) << 6
- 
-        adc = self.spi.xfer2([cmd1, cmd2, 0])
-        data = ((adc[1] & 15) << 8) + adc[2]
-        return data
             
     def close(self):
         self.spi.close()
