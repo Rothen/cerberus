@@ -36,7 +36,7 @@ void TCSBusWriter::write(uint32_t data)
     int curBit = 0;
     for (byte i = length; i > 0; i--)
     {
-        curBit = (data >> (i - 1)) & 1; // bitRead(data, i - 1);
+        curBit = (data >> (i - 1)) & 0x1; // bitRead(data, i - 1);
         digitalWrite(m_writePin, !digitalRead(m_writePin));
         // delay(curBit ? TCS_ONE_BIT_MS : TCS_ZERO_BIT_MS);
         delayMicroseconds(curBit ? TCS_ONE_BIT_MS * 1000 : TCS_ZERO_BIT_MS * 1000);

@@ -5,11 +5,10 @@ class MCP3008:
         self.bus, self.device = bus, device
         self.spi = SpiDev()
         self.open()
-        self.spi.max_speed_hz = 1000000 # 1MHz
  
     def open(self):
         self.spi.open(self.bus, self.device)
-        self.spi.max_speed_hz = 1000000 # 1MHz
+        self.spi.max_speed_hz = 100000 # 75kHz, not 1MHz
     
     def read(self, channel = 0):
         assert 0 <= channel <= 7, 'ADC number must be a value of 0-7!'

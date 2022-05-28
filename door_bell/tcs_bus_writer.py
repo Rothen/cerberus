@@ -14,4 +14,4 @@ class TCSBusWriter:
         return self.__tcs_bus_writer.isWriting()
 
     def write(self, data: int) -> None:
-        self.__tcs_bus_writer.write()
+        self.__tcs_bus_writer.write(data)
