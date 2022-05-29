@@ -68,8 +68,12 @@ void TCSBusReader::analyzeCMD()
     static byte curLength;
     static byte cmdIntReady;
     static byte curPos;
-
     uint32_t usNow = micros();
+
+    if (usNow - usLast < 1000) {
+        return;
+    }
+
     uint32_t timeInUS = usNow - usLast;
     usLast = usNow;
     byte curBit = 4;

@@ -6,7 +6,7 @@ import RPi.GPIO as GPIO
 from ws_worker import WSWorker
 import asyncio
 from tcs_worker import TCSWorker
-from tcs_bus import wiringPiSetupGpio, wiringPiSetup # type: ignore
+from tcs_bus import wiringPiSetupGpio # type: ignore
 from tcs_bus_reader import TCSBusReader
 from tcs_bus_writer import TCSBusWriter
 from consts import *
@@ -38,9 +38,15 @@ class WK(threading.Thread):
         GPIO.output(self.interrupt_pin, GPIO.HIGH)
 
     def run(self):
+        minimum = 10000
         while not self._stop_flag:
             value = self.mcp_3008.read(0)
-            GPIO.output(self.interrupt_pin, value >= 450)
+
+            if value < minimum:
+                minimum = value
+                print(value)
+                
+            GPIO.output(self.interrupt_pin, self.mcp_3008.read(0) >= 500)
     
     def stop(self):
         self._stop_flag = True
@@ -48,7 +54,6 @@ class WK(threading.Thread):
 
 tcs_bus_reader = TCSBusReader(READ_PIN)
 tcs_bus_writer = TCSBusWriter(WRITE_PIN)
-
 wk = WK(INTERRUPT_PIN)
 ws_worker = WSWorker(tcs_bus_writer)
 tcs_worker = TCSWorker(tcs_bus_reader, ws_worker)

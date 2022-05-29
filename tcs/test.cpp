@@ -1,4 +1,5 @@
-#include "tcs_bus.h"
+#include "tcs_bus_reader.h"
+#include "tcs_bus_writer.h"
 
 #define RING_UPSTAIRS 0x109E8141
 #define RING_DOWNSTAIRS 0x009E8180
@@ -8,14 +9,28 @@
 #define OPEN_VOICE_CHANNEL 0x309E8100
 
 TCSBusWriter writer(6);
+TCSBusReader reader(3);
 
 int main()
 {
     wiringPiSetup();
-    writer.begin();
+    reader.begin();
+    reader.enable();
+
+    while (true)
+    {
+        // std::cout << digitalRead(3) << '\n';
+        if (reader.hasCommand())
+        {
+            uint32_t cmd = reader.read();
+            std::cout << cmd;
+        }
+    }
+
+    /*writer.begin();
     std::cout << "Writing ring upstairs" << '\n';
     delay(1000);
-    writer.write(RING_UPSTAIRS);
+    writer.write(RING_UPSTAIRS);*/
 
     return 0;
 }
