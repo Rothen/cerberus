@@ -1,5 +1,4 @@
-import tcs_bus # type: ignore
-import ctypes
+from cerberus.tcs import tcs_bus
 
 class TCSBusReader:
     __tcs_bus_reader: tcs_bus.TCSBusReader

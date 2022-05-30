@@ -1,4 +1,4 @@
-import tcs_bus # type: ignore
+from cerberus.tcs import tcs_bus
 
 class TCSBusWriter:
     __tcs_bus_writer: tcs_bus.TCSBusWriter

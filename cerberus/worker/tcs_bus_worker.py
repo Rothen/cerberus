@@ -2,12 +2,12 @@
 
 import threading
 import time
-from tcs_bus_reader import TCSBusReader
-from tcs_bus_writer import TCSBusWriter
-from consts import *
 from datetime import datetime
 from reactivex import Subject
-from command_event import CommandEvent
+
+from cerberus.command_event import CommandEvent
+from cerberus.tcs import TCSBusReader, TCSBusWriter
+from cerberus.const import *
 
 
 class TCSBusWorker(threading.Thread):

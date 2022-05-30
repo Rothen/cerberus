@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
-from mcp3008 import MCP3008
 import threading
+
+from cerberus.tcs import MCP3008
 
 class TCSTunnelWorker(threading.Thread):
     interrupt_pin: int

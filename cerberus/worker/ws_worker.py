@@ -5,9 +5,10 @@ import websockets
 import asyncio
 import threading
 import time
-from consts import *
-from command_event import CommandEvent
-from tcs_bus_worker import TCSBusWorker
+
+from cerberus.const import *
+from cerberus.command_event import CommandEvent
+from cerberus.worker import TCSBusWorker
 
 class WSWorker (threading.Thread):
     ip: str

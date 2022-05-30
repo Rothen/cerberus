@@ -4,13 +4,9 @@ import signal
 import sys
 import RPi.GPIO as GPIO
 import asyncio
-from tcs_bus import wiringPiSetupGpio # type: ignore
-from consts import *
-from tcs_bus_reader import TCSBusReader
-from tcs_bus_writer import TCSBusWriter
-from tcs_tunnel_worker import TCSTunnelWorker
-from ws_worker import WSWorker
-from tcs_bus_worker import TCSBusWorker
+from cerberus.const import *
+from cerberus.tcs import TCSBusReader, TCSBusWriter, wiringPiSetupGpio
+from cerberus.worker import TCSTunnelWorker, WSWorker, TCSBusWorker
 
 GPIO.setmode(GPIO.BCM)
 wiringPiSetupGpio()

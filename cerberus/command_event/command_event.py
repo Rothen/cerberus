@@ -1,4 +1,4 @@
-from consts import *
+from cerberus.const import *
 
 class CommandEvent:
     def __init__(self, original_command: int, crc: int, calc_crc: int, cmd_length: int):
