@@ -5,35 +5,28 @@ volatile uint8_t TCSBusReader::s_cmdLength = 0;
 volatile bool TCSBusReader::s_cmdReady = false;
 volatile uint8_t TCSBusReader::s_crc = 0;
 volatile uint8_t TCSBusReader::s_calcCrc = 0;
+volatile bool TCSBusReader::m_enabled = false;
 
 TCSBusReader::TCSBusReader(uint8_t readPin)
-    : m_readPin(readPin),
-      m_enabled(false)
+    : m_readPin(readPin)
 {
 }
 
 void TCSBusReader::begin()
 {
     pinMode(m_readPin, INPUT);
+    wiringPiISR(m_readPin, INT_EDGE_BOTH,  analyzeCMD);
     enable();
 }
 
 void TCSBusReader::enable()
 {
-    if (!m_enabled)
-    {
-        m_enabled = true;
-        wiringPiISR(m_readPin, INT_EDGE_BOTH,  analyzeCMD);
-    }
+    m_enabled = true;
 }
 
 void TCSBusReader::disable()
 {
-    if (m_enabled)
-    {
-        m_enabled = false;
-        // detachInterrupt(digitalPinToInterrupt(m_readPin));
-    }
+    m_enabled = false;
 }
 
 bool TCSBusReader::hasCommand()
@@ -59,6 +52,10 @@ void TCSBusReader::analyzeCMD()
 {
     // this method is magic from https://github.com/atc1441/TCSintercomArduino
     // TODO extract these to members
+
+    if (!m_enabled) {
+        return;
+    }
 
     static uint32_t curCmd;
     static uint32_t usLast;

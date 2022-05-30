@@ -57,6 +57,6 @@ private:
     static volatile uint8_t s_calcCrc;
     static volatile uint8_t s_cmdLength;
     static volatile bool s_cmdReady;
+    static volatile bool m_enabled;
     uint8_t m_readPin;
-    bool m_enabled;
 };
