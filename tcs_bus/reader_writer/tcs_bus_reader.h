@@ -38,17 +38,12 @@ public:
     /**
      * @brief Reads the last message from the bus and also resets the #hasCommand() flag.
      *
-     * @return uint32_t the last command from the bus
+     * @param cmd the pointer where to write the cmd to.
+     * @param curCrc the pointer where to write the curCrc to.
+     * @param calcCrc the pointer where to write the calcCrc to.
+     * @param cmdLength the pointer where to write the length of the command to.
      */
-    uint32_t read();
-
-    /**
-     * @brief Injects a command into the reader that can be read from it directly
-     * without being read from the bus.
-     *
-     * @param cmd the command to inject
-     */
-    void inject(uint32_t cmd);
+    void read(uint32_t *cmd, uint8_t *curCrc, uint8_t *calcCrc, uint8_t *cmdLength);
 
 private:
     /**
@@ -58,6 +53,8 @@ private:
     static void analyzeCMD();
 
     static volatile uint32_t s_cmd;
+    static volatile uint8_t s_crc;
+    static volatile uint8_t s_calcCrc;
     static volatile uint8_t s_cmdLength;
     static volatile bool s_cmdReady;
     uint8_t m_readPin;

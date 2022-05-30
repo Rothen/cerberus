@@ -3,6 +3,8 @@
 volatile uint32_t TCSBusReader::s_cmd = 0;
 volatile uint8_t TCSBusReader::s_cmdLength = 0;
 volatile bool TCSBusReader::s_cmdReady = false;
+volatile uint8_t TCSBusReader::s_crc = 0;
+volatile uint8_t TCSBusReader::s_calcCrc = 0;
 
 TCSBusReader::TCSBusReader(uint8_t readPin)
     : m_readPin(readPin),
@@ -39,21 +41,18 @@ bool TCSBusReader::hasCommand()
     return s_cmdReady;
 }
 
-uint32_t TCSBusReader::read()
+void TCSBusReader::read(uint32_t *cmd, uint8_t *curCrc, uint8_t *calcCrc, uint8_t *cmdLength)
 {
     if (!s_cmdReady)
     {
-        return 0;
+        return;
     }
-    uint32_t tmp = s_cmd;
-    s_cmdReady = false;
-    return tmp;
-}
 
-void TCSBusReader::inject(uint32_t cmd)
-{
-    s_cmdReady = 1;
-    s_cmd = cmd;
+    *cmd = s_cmd;
+    *curCrc = s_crc;
+    *calcCrc = s_calcCrc;
+    *cmdLength = s_cmdLength;
+    s_cmdReady = false;
 }
 
 void TCSBusReader::analyzeCMD()
@@ -61,10 +60,10 @@ void TCSBusReader::analyzeCMD()
     // this method is magic from https://github.com/atc1441/TCSintercomArduino
     // TODO extract these to members
 
-    static uint32_t curCMD;
+    static uint32_t curCmd;
     static uint32_t usLast;
-    static byte curCRC;
-    static byte calCRC;
+    static byte curCrc;
+    static byte calcCrc;
     static byte curLength;
     static byte cmdIntReady;
     static byte curPos;
@@ -102,9 +101,9 @@ void TCSBusReader::analyzeCMD()
         {
             curPos++;
         }
-        curCMD = 0;
-        curCRC = 0;
-        calCRC = 1;
+        curCmd = 0;
+        curCrc = 0;
+        calcCrc = 1;
         curLength = 0;
     }
     else if (curBit == 0 || curBit == 1)
@@ -118,9 +117,9 @@ void TCSBusReader::analyzeCMD()
         {
             if (curBit)
             {
-                curCMD |= (1UL << ((curLength ? 33 : 17) - curPos));
+                curCmd |= (1UL << ((curLength ? 33 : 17) - curPos));
             }
-            calCRC ^= curBit;
+            calcCrc ^= curBit;
             curPos++;
         }
         else if (curPos == 18)
@@ -129,14 +128,14 @@ void TCSBusReader::analyzeCMD()
             {
                 if (curBit)
                 {
-                    curCMD |= 1UL << (33 - curPos);
+                    curCmd |= 1UL << (33 - curPos);
                 }
-                calCRC ^= curBit;
+                calcCrc ^= curBit;
                 curPos++;
             }
             else
             {
-                curCRC = curBit;
+                curCrc = curBit;
                 cmdIntReady = 1;
             }
         }
@@ -144,14 +143,14 @@ void TCSBusReader::analyzeCMD()
         {
             if (curBit)
             {
-                curCMD |= 1UL << (33 - curPos);
+                curCmd |= 1UL << (33 - curPos);
             }
-            calCRC ^= curBit;
+            calcCrc ^= curBit;
             curPos++;
         }
         else if (curPos == 34)
         {
-            curCRC = curBit;
+            curCrc = curBit;
             cmdIntReady = 1;
         }
     }
@@ -163,13 +162,14 @@ void TCSBusReader::analyzeCMD()
     if (cmdIntReady)
     {
         cmdIntReady = 0;
-        if (curCRC == calCRC)
-        {
-            s_cmdReady = 1;
-            s_cmdLength = curLength; // todo this variable seems to be not used anywhere
-            s_cmd = curCMD;
-        }
-        curCMD = 0;
+        s_cmdReady = 1;
+        s_cmdLength = (curLength) ? 32 : 16;
+        s_cmd = curCmd;
+        s_crc = curCrc;
+        s_calcCrc = calcCrc;
+        curCmd = 0;
+        curCrc = 0;
+        calcCrc = 0;
         curPos = 0;
     }
 }

@@ -1,4 +1,5 @@
 import tcs_bus # type: ignore
+import ctypes
 
 class TCSBusReader:
     __tcs_bus_reader: tcs_bus.TCSBusReader
@@ -19,8 +20,5 @@ class TCSBusReader:
     def hasCommand(self) -> bool:
         return self.__tcs_bus_reader.hasCommand()
 
-    def read(self) -> int :
+    def read(self) -> tuple :
         return self.__tcs_bus_reader.read()
-
-    def inject(self, cmd: int) -> None:
-        self.__tcs_bus_reader.inject(cmd)

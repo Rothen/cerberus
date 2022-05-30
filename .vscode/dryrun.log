@@ -1,0 +1,8 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/pi/door_bell'
+g++ -fPIC -I/usr/include/python3.9 -I/home/pi/.local/lib/python3.9/site-packages/pybind11/include -c tcs_bus/tcs_bus_pybind.cpp
+g++ -c tcs_bus/reader_writer/tcs_bus_reader.cpp
+g++ -c tcs_bus/reader_writer/tcs_bus_writer.cpp
+g++ -O3 -Wall -shared -o door_bell/tcs_bus.cpython-39-arm-linux-gnueabihf.so tcs_bus_pybind.o tcs_bus_reader.o tcs_bus_writer.o -lwiringPi -llgpio
+make: Leaving directory '/home/pi/door_bell'
+ 

@@ -1,26 +1,29 @@
 #!/usr/bin/env python3
 
+from reactivex import Subject
 import websockets
 import asyncio
 import threading
 import time
 from consts import *
-from tcs_bus_writer import TCSBusWriter
+from command_event import CommandEvent
+from tcs_bus_worker import TCSBusWorker
 
 class WSWorker (threading.Thread):
     ip: str
     port: int
 
+    _subscription: Subject
     _stop_flag: bool
     _connected: set
     _ws_server: any
     _loop: asyncio.AbstractEventLoop
-    _tcs_bus_writer: TCSBusWriter
+    _tcs_bus_worker: TCSBusWorker
 
-    def __init__(self, tcs_bus_writer: TCSBusWriter, ip: str = '0.0.0.0', port: int = 7700):
+    def __init__(self, tcs_bus_worker: TCSBusWorker, ip: str = '0.0.0.0', port: int = 7700):
         threading.Thread.__init__(self)
 
-        self.tcs_bus_writer = tcs_bus_writer
+        self.tcs_bus_worker = tcs_bus_worker
         self.ip = ip
         self.port = port
         
@@ -29,13 +32,22 @@ class WSWorker (threading.Thread):
         self.requests = WS_REQUESTS
         self.prepare_commands()
 
+        self._subscription = self.tcs_bus_worker.command_read.subscribe(
+            on_next = self.command_read
+        )
+
         self._ws_server = websockets.serve(self.handler, ip, port)
         self._loop = asyncio.get_event_loop()
         self._loop.run_until_complete(self._ws_server)
 
     def prepare_commands(self) -> None:
-            self.requests['OPEN_DOOR']['fn'] = self.open_door
-            self.requests['OPEN_VOICE_CHANNEL']['fn'] = self.open_voice_channel
+            self.requests['RING_UPSTAIRS']['fn'] = self.send_ring_upstairs
+            self.requests['RING_DOWNSTAIRS']['fn'] = self.send_ring_downstairs
+            self.requests['CANCLE_VOICE_CONTROL_SEQUENCE']['fn'] = self.send_cancle_voice_control_sequence
+            self.requests['CANCLE_CONTROL_SEQUENCE']['fn'] = self.send_cancle_control_sequence
+            self.requests['OPEN_DOOR']['fn'] = self.send_open_door
+            self.requests['OPEN_VOICE_CHANNEL']['fn'] = self.send_open_voice_channel
+            self.requests['CONTROL_SEQUENCE']['fn'] = self.send_control_sequence
 
     def run(self):
         while not self._stop_flag:
@@ -61,20 +73,50 @@ class WSWorker (threading.Thread):
             self._connected.remove(websocket)
             pass
 
-    def send_data(self, data):
-        for websocket in self._connected.copy():
-            print("Sending data: %s" % data)
-            res = websocket.send(data)
-            asyncio.run_coroutine_threadsafe(res, self._loop)
-    
     def stop(self):
+        self._subscription.dispose()
         self._stop_flag = True
         self.join()
 
-    def open_door(self) -> None:
-        print("Writing " + hex(OPEN_DOOR))
-        self.tcs_bus_writer.write(OPEN_DOOR)
+    def command_read(self, command_event: CommandEvent) -> None:
+        self.send(hex(command_event.cmd))
 
-    def open_voice_channel(self) -> None:
+    def send(self, data: str):
+        print("WS Sending data: %s" % data)
+        for websocket in self._connected.copy():
+            res = websocket.send(data)
+            asyncio.run_coroutine_threadsafe(res, self._loop)
+
+    def send_ring_upstairs(self) -> None:
         print("Writing " + hex(RING_UPSTAIRS))
-        self.tcs_bus_writer.write(RING_UPSTAIRS)
+        self.tcs_bus_worker.write_command(RING_UPSTAIRS)
+
+
+    def send_ring_downstairs(self) -> None:
+        print("Writing " + hex(RING_DOWNSTAIRS))
+        self.tcs_bus_worker.write_command(RING_DOWNSTAIRS)
+
+
+    def send_cancle_voice_control_sequence(self) -> None:
+        print("Writing " + hex(CANCLE_VOICE_CONTROL_SEQUENCE))
+        self.tcs_bus_worker.write_command(CANCLE_VOICE_CONTROL_SEQUENCE)
+
+
+    def send_cancle_control_sequence(self) -> None:
+        print("Writing " + hex(CANCLE_CONTROL_SEQUENCE))
+        self.tcs_bus_worker.write_command(CANCLE_CONTROL_SEQUENCE)
+
+
+    def send_open_door(self) -> None:
+        print("Writing " + hex(OPEN_DOOR))
+        self.tcs_bus_worker.write_command(OPEN_DOOR)
+
+
+    def send_open_voice_channel(self) -> None:
+        print("Writing " + hex(OPEN_VOICE_CHANNEL))
+        self.tcs_bus_worker.write_command(OPEN_VOICE_CHANNEL)
+
+
+    def send_control_sequence(self) -> None:
+        print("Writing " + hex(CONTROL_SEQUENCE))
+        self.tcs_bus_worker.write_command(CONTROL_SEQUENCE)

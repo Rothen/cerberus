@@ -3,3 +3,5 @@ tcs/out/**/*
 *.so
 __pycache__/
 *.out
+*.o
+commands.log
