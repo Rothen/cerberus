@@ -21,7 +21,7 @@ class UARTWorker(TCSCommunicator):
         if self._serial.in_waiting > 0:
             line = self._serial.readline().decode("utf-8").replace('\r\n', '')
             lines = line.split(', ')
-            print(line)
+            print('UART Incoming Line: %s' % (line))
 
             if len(lines) > 1:
                 return self.parse_command(lines)
