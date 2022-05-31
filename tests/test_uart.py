@@ -10,7 +10,7 @@ OPEN_VOICE_CHANNEL = 0x309E8100
 CONTROL_SEQUENCE = 0x5802
 
 ser = serial.Serial("/dev/ttyS0", 9600)
-ser.write(bytes('%s\n' % (hex(CANCLE_ACTIVITY)), 'utf-8'))
+ser.write(bytes('%s\r\n' % ('GOT: 0x109e8141, CRC: 0, CALC_CRC: 0'), 'utf-8'))
 sleep(0.1)
-ser.write(bytes('%s\n' % (hex(CANCLE_ACTIVITY)), 'utf-8'))
+ser.write(bytes('%s\r\n' % ('GOT: 0x109e8141, CRC: 0, CALC_CRC: 0'), 'utf-8'))
 ser.close()

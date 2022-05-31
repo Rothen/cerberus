@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon May 30 15:10:54 2022
+# Make data base, printed on Tue May 31 11:27:08 2022
 
 # Variables
 
@@ -48,7 +48,7 @@ LANG = C
 MAKEFLAGS = pqrR
 # makefile
 CURDIR := /home/pi/door_bell
-# makefile (from 'makefile', line 5)
+# makefile (from 'makefile', line 6)
 pybind11_includes = -fPIC -I/usr/include/python3.9 -I/home/pi/.local/lib/python3.9/site-packages/pybind11/include
 # environment
 VSCODE_PIPE_LOGGING = true
@@ -66,7 +66,7 @@ MFLAGS = -pqrR
 MAKEFILE_LIST := makefile
 # automatic
 @F = $(notdir $@)
-# makefile (from 'makefile', line 6)
+# makefile (from 'makefile', line 7)
 pybind11_suffix = .cpython-39-arm-linux-gnueabihf.so
 # environment
 VSCODE_VERBOSE_LOGGING = true
@@ -84,14 +84,16 @@ DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 VSCODE_NLS_CONFIG = {"locale":"en","availableLanguages":{}}
 # default
 MAKE_HOST := arm-unknown-linux-gnueabihf
-# makefile (from 'makefile', line 4)
+# makefile (from 'makefile', line 5)
 read_write_objects = tcs_bus_reader.o tcs_bus_writer.o
 # makefile
 SHELL = /bin/sh
 # default
 MAKECMDGOALS := all
 # environment
-SHLVL = 0
+PLATFORMIO_CALLER = vscode
+# environment
+SHLVL = 1
 # environment
 MAKELEVEL := 0
 # default
@@ -107,21 +109,27 @@ MOTD_SHOWN = pam
 # automatic
 ^F = $(notdir $^)
 # environment
-SSH_CLIENT = 2001:1620:51f8:1:8899:b81d:792e:2ab2 57337 22
+SSH_CLIENT = 2001:1620:51f8:1:d922:ea24:ed6e:4d2e 56395 22
 # environment
 VSCODE_LOG_NATIVE = false
 # automatic
 ?F = $(notdir $?)
 # environment
+NO_PROXY = 127.0.0.1
+# environment
 LS_COLORS = 
 # automatic
 +F = $(notdir $+)
+# makefile (from 'makefile', line 3)
+output_dir = cerbers/tcs/
 # 'override' directive
 GNUMAKEFLAGS := 
 # environment
 BROWSER = /home/pi/.vscode-server/bin/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5/bin/helpers/browser.sh
 # environment
 LOGNAME = pi
+# environment
+PLATFORMIO_PATH = /home/pi/.platformio/python3/bin:/home/pi/.vscode-server/bin/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5/bin/remote-cli:/home/pi/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
 # makefile
 .DEFAULT_GOAL := all
 # environment
@@ -139,17 +147,19 @@ XDG_RUNTIME_DIR = /run/user/1000
 # makefile (from 'makefile', line 2)
 dir = tcs_bus/
 # environment
-VSCODE_IPC_HOOK_CLI = /run/user/1000/vscode-ipc-201dba68-76d1-4f18-9b0c-2ebf07951fb7.sock
+VSCODE_IPC_HOOK_CLI = /run/user/1000/vscode-ipc-f9ccca9a-a190-4051-a6f5-71e699f2516b.sock
 # environment
 XDG_SESSION_CLASS = user
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
-# makefile (from 'makefile', line 3)
+# environment
+PLATFORMIO_IDE = 2.4.3
+# makefile (from 'makefile', line 4)
 reader_writer_dir = $(dir)reader_writer/
 # environment
 HOME = /home/pi
 # environment
-XDG_SESSION_ID = 33
+XDG_SESSION_ID = 4
 # default
 .RECIPEPREFIX := 
 # automatic
@@ -161,9 +171,9 @@ SUFFIXES :=
 # makefile (from 'makefile', line 1)
 CXX = g++
 # environment
-SSH_CONNECTION = 2001:1620:51f8:1:8899:b81d:792e:2ab2 57337 2001:1620:51f8:1:3ebb:85f9:aef7:74d3 22
+SSH_CONNECTION = 2001:1620:51f8:1:d922:ea24:ed6e:4d2e 56395 2001:1620:51f8:1:3ebb:85f9:aef7:74d3 22
 # variable set hash-table stats:
-# Load=76/1024=7%, Rehash=0, Collisions=2/126=2%
+# Load=81/1024=8%, Rehash=0, Collisions=9/132=7%
 
 # Pattern-specific Variable Values
 
@@ -171,9 +181,9 @@ SSH_CONNECTION = 2001:1620:51f8:1:8899:b81d:792e:2ab2 57337 2001:1620:51f8:1:3eb
 
 # Directories
 
-# . (device 45826, inode 388738): 15 files, no impossibilities.
+# . (device 45826, inode 388738): 16 files, no impossibilities.
 
-# 15 files, no impossibilities in 1 directories.
+# 16 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -193,7 +203,7 @@ tcs_bus_writer.o: tcs_bus/reader_writer/tcs_bus_writer.cpp tcs_bus/reader_writer
 #  Last modified 2022-05-30 13:35:21.212235491
 #  File has been updated.
 #  Successfully updated.
-#  recipe to execute (from 'makefile', line 20):
+#  recipe to execute (from 'makefile', line 21):
 	$(CXX) -c $(reader_writer_dir)tcs_bus_writer.cpp
 
 # Not a target:
@@ -207,7 +217,7 @@ clean:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'makefile', line 23):
+#  recipe to execute (from 'makefile', line 24):
 	-rm *.o
 
 pybind: tcs_bus_pybind.o tcs_bus_reader.o tcs_bus_writer.o
@@ -233,9 +243,9 @@ pybind: tcs_bus_pybind.o tcs_bus_reader.o tcs_bus_writer.o
 # automatic
 # | := 
 # variable set hash-table stats:
-# Load=8/32=25%, Rehash=0, Collisions=5/14=36%
-#  recipe to execute (from 'makefile', line 11):
-	$(CXX) -O3 -Wall -shared -o door_bell/tcs_bus$(pybind11_suffix) tcs_bus_pybind.o $(read_write_objects) -lwiringPi -llgpio
+# Load=8/32=25%, Rehash=0, Collisions=5/15=33%
+#  recipe to execute (from 'makefile', line 12):
+	$(CXX) -O3 -Wall -shared -o $(output_dir)tcs_bus$(pybind11_suffix) tcs_bus_pybind.o $(read_write_objects) -lwiringPi -llgpio
 
 # Not a target:
 .DEFAULT:
@@ -250,14 +260,15 @@ all: pybind
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/6=0%
+# Load=0/32=0%, Rehash=0, Collisions=0/7=0%
 
 tcs_bus_reader.o: tcs_bus/reader_writer/tcs_bus_reader.cpp tcs_bus/reader_writer/tcs_bus_reader.h tcs_bus/reader_writer/common.h
 #  Implicit rule search has not been done.
 #  Last modified 2022-05-30 13:35:19.762232093
 #  File has been updated.
+ 
 #  Successfully updated.
-#  recipe to execute (from 'makefile', line 17):
+#  recipe to execute (from 'makefile', line 18):
 	$(CXX) -c $(reader_writer_dir)tcs_bus_reader.cpp
 
 # Not a target:
@@ -270,7 +281,7 @@ tcs_bus/reader_writer/tcs_bus_writer.cpp:
 # Not a target:
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-30 09:32:10.785862578
+#  Last modified 2022-05-30 16:27:05.587287859
 #  File has been updated.
 #  Successfully updated.
 
@@ -279,7 +290,7 @@ tcs_bus_pybind.o: tcs_bus/tcs_bus_pybind.cpp
 #  Last modified 2022-05-30 13:33:25.002071656
 #  File has been updated.
 #  Successfully updated.
-#  recipe to execute (from 'makefile', line 14):
+#  recipe to execute (from 'makefile', line 15):
 	$(CXX) $(pybind11_includes) -c $(dir)tcs_bus_pybind.cpp
 
 # Not a target:
@@ -291,7 +302,6 @@ tcs_bus_pybind.o: tcs_bus/tcs_bus_pybind.cpp
 # Not a target:
 tcs_bus/tcs_bus_pybind.cpp:
 #  Implicit rule search has been done.
- 
 #  Last modified 2022-05-30 09:23:43.366463265
 #  File has been updated.
 #  Successfully updated.
@@ -318,12 +328,12 @@ tcs_bus/reader_writer/common.h:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 28 / storage = 438 B / avg = 15 B
-# current buf: size = 8174 B / used = 438 B / count = 28 / avg = 15 B
+# strcache buffers: 1 (0) / strings = 29 / storage = 457 B / avg = 15 B
+# current buf: size = 8174 B / used = 457 B / count = 29 / avg = 15 B
 
-# strcache performance: lookups = 48 / hit rate = 41%
+# strcache performance: lookups = 49 / hit rate = 40%
 # hash-table stats:
-# Load=28/8192=0%, Rehash=0, Collisions=0/48=0%
-# Finished Make data base on Mon May 30 15:10:54 2022
+# Load=29/8192=0%, Rehash=0, Collisions=0/49=0%
+# Finished Make data base on Tue May 31 11:27:08 2022
 
  

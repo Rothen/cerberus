@@ -1,11 +1,15 @@
 from cerberus.const import *
 
 class CommandEvent:
-    def __init__(self, original_command: int, crc: int, calc_crc: int, cmd_length: int):
+    def __init__(self, original_command: int, crc: int, calc_crc: int, cmd_length: int = None):
         self.original_command = original_command
         self.crc = crc
         self.calc_crc = calc_crc
-        self.cmd_length = cmd_length
+
+        if cmd_length == None:
+            self.cmd_length = 32 if self.original_command > 0xFFFF else 16
+        else:
+            self.cmd_length = cmd_length
 
         self.__calculate_nearest_command(self.original_command, cmd_length)
 
