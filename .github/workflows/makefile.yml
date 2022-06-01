@@ -23,7 +23,10 @@ jobs:
       run: sudo apt-get install wiringpi
       
     - name: Install pybind11
-      run: python3 -m pip install pybind11
+      run: python3 -m pip install "pybind11[global]"
+    
+    - name: Test pybind11
+      run: python3 -m pybind11 --includes
       
     - name: Make
       run: make
