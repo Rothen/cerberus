@@ -15,10 +15,10 @@ tcs_bus_pybind.o: $(dir)tcs_bus_pybind.cpp
 	$(CXX) $(pybind11_includes) -c $(dir)tcs_bus_pybind.cpp -lwiringPi
 
 tcs_bus_reader.o: $(reader_writer_dir)tcs_bus_reader.cpp $(reader_writer_dir)tcs_bus_reader.h $(reader_writer_dir)common.h
-	$(CXX) -c $(reader_writer_dir)tcs_bus_reader.cpp
+	$(CXX) -fPIC -c $(reader_writer_dir)tcs_bus_reader.cpp
 
 tcs_bus_writer.o: $(reader_writer_dir)tcs_bus_writer.cpp $(reader_writer_dir)tcs_bus_writer.h $(reader_writer_dir)common.h
-	$(CXX) -c $(reader_writer_dir)tcs_bus_writer.cpp
+	$(CXX) -fPIC -c $(reader_writer_dir)tcs_bus_writer.cpp
 
 clean :
 	-rm *.o ${objects}
