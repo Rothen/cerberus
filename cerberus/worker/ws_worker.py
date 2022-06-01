@@ -49,8 +49,8 @@ class WSWorker (threading.Thread):
     def prepare_commands(self) -> None:
             self.requests['RING_UPSTAIRS']['fn'] = self.send_ring_upstairs
             self.requests['RING_DOWNSTAIRS']['fn'] = self.send_ring_downstairs
-            self.requests['CANCLE_VOICE_CONTROL_SEQUENCE']['fn'] = self.send_cancle_voice_control_sequence
-            self.requests['CANCLE_CONTROL_SEQUENCE']['fn'] = self.send_cancle_control_sequence
+            self.requests['CANCEL_VOICE_CONTROL_SEQUENCE']['fn'] = self.send_cancel_voice_control_sequence
+            self.requests['CANCEL_CONTROL_SEQUENCE']['fn'] = self.send_cancel_control_sequence
             self.requests['OPEN_DOOR']['fn'] = self.send_open_door
             self.requests['OPEN_VOICE_CHANNEL']['fn'] = self.send_open_voice_channel
             self.requests['CONTROL_SEQUENCE']['fn'] = self.send_control_sequence
@@ -96,34 +96,34 @@ class WSWorker (threading.Thread):
 
     def send_ring_upstairs(self) -> None:
         print("Writing " + hex(RING_UPSTAIRS))
-        self._tcs_communicator.write_command(RING_UPSTAIRS)
+        self._tcs_communicator.write(RING_UPSTAIRS)
 
 
     def send_ring_downstairs(self) -> None:
         print("Writing " + hex(RING_DOWNSTAIRS))
-        self._tcs_communicator.write_command(RING_DOWNSTAIRS)
+        self._tcs_communicator.write(RING_DOWNSTAIRS)
 
 
-    def send_cancle_voice_control_sequence(self) -> None:
-        print("Writing " + hex(CANCLE_VOICE_CONTROL_SEQUENCE))
-        self._tcs_communicator.write_command(CANCLE_VOICE_CONTROL_SEQUENCE)
+    def send_cancel_voice_control_sequence(self) -> None:
+        print("Writing " + hex(CANCEL_VOICE_CONTROL_SEQUENCE))
+        self._tcs_communicator.write(CANCEL_VOICE_CONTROL_SEQUENCE)
 
 
-    def send_cancle_control_sequence(self) -> None:
-        print("Writing " + hex(CANCLE_CONTROL_SEQUENCE))
-        self._tcs_communicator.write_command(CANCLE_CONTROL_SEQUENCE)
+    def send_cancel_control_sequence(self) -> None:
+        print("Writing " + hex(CANCEL_CONTROL_SEQUENCE))
+        self._tcs_communicator.write(CANCEL_CONTROL_SEQUENCE)
 
 
     def send_open_door(self) -> None:
         print("Writing " + hex(OPEN_DOOR))
-        self._tcs_communicator.write_command(OPEN_DOOR)
+        self._tcs_communicator.write(OPEN_DOOR)
 
 
     def send_open_voice_channel(self) -> None:
         print("Writing " + hex(OPEN_VOICE_CHANNEL))
-        self._tcs_communicator.write_command(OPEN_VOICE_CHANNEL)
+        self._tcs_communicator.write(OPEN_VOICE_CHANNEL)
 
 
     def send_control_sequence(self) -> None:
         print("Writing " + hex(CONTROL_SEQUENCE))
-        self._tcs_communicator.write_command(CONTROL_SEQUENCE)
+        self._tcs_communicator.write(CONTROL_SEQUENCE)

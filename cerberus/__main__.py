@@ -11,7 +11,7 @@ from cerberus.worker import TCSTunnelWorker, WSWorker, TCSBusWorker, UARTWorker
 GPIO.setmode(GPIO.BCM)
 wiringPiSetupGpio()
 
-use_uart = True
+use_uart = False
 
 tcs_bus_worker = TCSBusWorker(TCSBusReader(READ_PIN), TCSBusWriter(WRITE_PIN))
 
