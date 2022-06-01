@@ -12,18 +12,9 @@ jobs:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v3
-    
-    - name: Install WiringPI
-      run: sudo apt-get install libwiringpi-dev
-      
-    - name: Install pybind11
-      run: python3 -m pip install pybind11
       
     - name: Make
       run: make
-
-    - name: Install wheel
-      run: python3 -m pip install wheel
 
     - name: Build wheels
       run: python3 -m pip wheel -w dist .
