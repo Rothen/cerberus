@@ -20,13 +20,10 @@ jobs:
         architecture: 'x64'
     
     - name: Install WiringPI
-      run: sudo apt-get install wiringpi
+      run: sudo apt -y install wiringpi
       
     - name: Install pybind11
-      run: python3 -m pip install "pybind11[global]"
-    
-    - name: Test pybind11
-      run: python3 -m pybind11 --includes
+      run: python3 -m pip install pybind11
       
     - name: Make
       run: make
