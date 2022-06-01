@@ -10,6 +10,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
 
     steps:
     - uses: actions/checkout@v3
@@ -27,3 +30,16 @@ jobs:
       
     - name: Make
       run: make
+
+    - name: Install cibuildwheel
+      run: python3 -m pip install cibuildwheel==2.6.0
+
+    - name: Build wheels
+      run: python3 -m cibuildwheel --output-dir wheelhouse
+      # to supply options, put them in 'env', like:
+      # env:
+      #   CIBW_SOME_OPTION: value
+
+    - uses: actions/upload-artifact@v2
+      with:
+        path: ./dist/*.whl
