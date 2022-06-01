@@ -1,6 +1,5 @@
-make --dry-run --always-make --keep-going --print-directory
+make --dry-run --keep-going --print-directory
 make: Entering directory '/home/pi/cerberus'
+g++ -O3 -Wall -shared -o cerberus/tcs/tcs_bus.cpython-39-arm-linux-gnueabihf.so tcs_bus_pybind.o tcs_bus_reader.o tcs_bus_writer.o -lwiringPi -llgpio
 make: Leaving directory '/home/pi/cerberus'
  
-make: *** No targets specified and no makefile found.  Stop.
-

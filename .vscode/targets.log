@@ -1,6 +1,4 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'tcs_bus/tcs_bus_pybind.cpp', needed by 'tcs_bus_pybind.o'.  Stop.
-
 # GNU Make 4.3
 # Built for arm-unknown-linux-gnueabihf
 # Copyright (C) 1988-2020 Free Software Foundation, Inc.
@@ -8,7 +6,7 @@ make: *** No rule to make target 'tcs_bus/tcs_bus_pybind.cpp', needed by 'tcs_bu
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed Jun  1 10:12:40 2022
+# Make data base, printed on Wed Jun  1 10:20:16 2022
 
 # Variables
 
@@ -55,7 +53,7 @@ pybind11_includes = -fPIC -I/usr/include/python3.9 -I/home/pi/.local/lib/python3
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
@@ -119,7 +117,7 @@ LS_COLORS =
 # automatic
 +F = $(notdir $+)
 # makefile (from 'makefile', line 3)
-output_dir = cerbers/tcs/
+output_dir = cerberus/tcs/
 # 'override' directive
 GNUMAKEFLAGS := 
 # environment
@@ -141,7 +139,7 @@ _ = /home/pi/.vscode-server/bin/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5/node
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # makefile (from 'makefile', line 2)
-dir = tcs_bus/
+dir = libs/tcs_bus/
 # environment
 VSCODE_IPC_HOOK_CLI = /run/user/1000/vscode-ipc-a8eb3872-53d2-4684-84fb-17d2e1b283f0.sock
 # environment
@@ -167,7 +165,7 @@ CXX = g++
 # environment
 SSH_CONNECTION = 2001:1620:51f8:1:d922:ea24:ed6e:4d2e 56395 2001:1620:51f8:1:3ebb:85f9:aef7:74d3 22
 # variable set hash-table stats:
-# Load=77/1024=8%, Rehash=0, Collisions=2/121=2%
+# Load=77/1024=8%, Rehash=0, Collisions=2/128=2%
 
 # Pattern-specific Variable Values
 
@@ -175,9 +173,9 @@ SSH_CONNECTION = 2001:1620:51f8:1:d922:ea24:ed6e:4d2e 56395 2001:1620:51f8:1:3eb
 
 # Directories
 
-# . (device 45826, inode 392432): 11 files, no impossibilities.
+# . (device 45826, inode 392432): 14 files, no impossibilities.
 
-# 11 files, no impossibilities in 1 directories.
+# 14 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -185,36 +183,59 @@ SSH_CONNECTION = 2001:1620:51f8:1:d922:ea24:ed6e:4d2e 56395 2001:1620:51f8:1:3eb
 
 # Files
 
-# Not a target:
-tcs_bus/reader_writer/tcs_bus_reader.cpp:
+tcs_bus_writer.o: libs/tcs_bus/reader_writer/tcs_bus_writer.cpp libs/tcs_bus/reader_writer/tcs_bus_writer.h libs/tcs_bus/reader_writer/common.h
 #  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-tcs_bus_writer.o: tcs_bus/reader_writer/tcs_bus_writer.cpp tcs_bus/reader_writer/tcs_bus_writer.h tcs_bus/reader_writer/common.h
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Last modified 2022-06-01 10:15:40.92437183
+#  File has been updated.
+#  Successfully updated.
 #  recipe to execute (from 'makefile', line 21):
 	$(CXX) -c $(reader_writer_dir)tcs_bus_writer.cpp
 
 # Not a target:
-tcs_bus/reader_writer/tcs_bus_reader.h:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+libs/tcs_bus/reader_writer/tcs_bus_reader.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-06-01 10:12:17.384336097
+#  File has been updated.
+#  Successfully updated.
 
 clean:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'makefile', line 24):
-	-rm *.o
+	-rm *.o ${objects}
+
+# Not a target:
+libs/tcs_bus/reader_writer/tcs_bus_writer.cpp:
+#  Implicit rule search has been done.
+#  Last modified 2022-06-01 10:12:17.384336097
+#  File has been updated.
+#  Successfully updated.
 
 pybind: tcs_bus_pybind.o tcs_bus_reader.o tcs_bus_writer.o
 #  Implicit rule search has not been done.
+#  Implicit/static pattern stem: ''
 #  File does not exist.
-#  File has not been updated.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := pybind
+# automatic
+# * := 
+# automatic
+# < := tcs_bus_pybind.o
+# automatic
+# + := tcs_bus_pybind.o tcs_bus_reader.o tcs_bus_writer.o
+# automatic
+# % := 
+# automatic
+# ^ := tcs_bus_pybind.o tcs_bus_reader.o tcs_bus_writer.o
+# automatic
+# ? := tcs_bus_pybind.o tcs_bus_reader.o tcs_bus_writer.o
+# automatic
+# | := 
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=5/15=33%
 #  recipe to execute (from 'makefile', line 12):
 	$(CXX) -O3 -Wall -shared -o $(output_dir)tcs_bus$(pybind11_suffix) tcs_bus_pybind.o $(read_write_objects) -lwiringPi -llgpio
 
@@ -228,67 +249,83 @@ all: pybind
 #  Command line target.
 #  Implicit rule search has been done.
 #  File does not exist.
-#  File has not been updated.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/7=0%
 
-tcs_bus_reader.o: tcs_bus/reader_writer/tcs_bus_reader.cpp tcs_bus/reader_writer/tcs_bus_reader.h tcs_bus/reader_writer/common.h
+tcs_bus_reader.o: libs/tcs_bus/reader_writer/tcs_bus_reader.cpp libs/tcs_bus/reader_writer/tcs_bus_reader.h libs/tcs_bus/reader_writer/common.h
 #  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Last modified 2022-06-01 10:15:39.074371575
+#  File has been updated.
+#  Successfully updated.
 #  recipe to execute (from 'makefile', line 18):
 	$(CXX) -c $(reader_writer_dir)tcs_bus_reader.cpp
 
 # Not a target:
-tcs_bus/reader_writer/tcs_bus_writer.cpp:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-makefile:
+libs/tcs_bus/tcs_bus_pybind.cpp:
 #  Implicit rule search has been done.
 #  Last modified 2022-06-01 10:12:17.384336097
 #  File has been updated.
 #  Successfully updated.
 
-tcs_bus_pybind.o: tcs_bus/tcs_bus_pybind.cpp
+# Not a target:
+libs/tcs_bus/reader_writer/tcs_bus_reader.cpp:
+#  Implicit rule search has been done.
+#  Last modified 2022-06-01 10:12:17.384336097
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+makefile:
+#  Implicit rule search has been done.
+#  Last modified 2022-06-01 10:17:08.024382619
+#  File has been updated.
+#  Successfully updated.
+
+tcs_bus_pybind.o: libs/tcs_bus/tcs_bus_pybind.cpp
 #  Implicit rule search has not been done.
-#  File does not exist.
-#  File has not been updated.
+ 
+#  Last modified 2022-06-01 10:15:37.004371289
+#  File has been updated.
+#  Successfully updated.
 #  recipe to execute (from 'makefile', line 15):
 	$(CXX) $(pybind11_includes) -c $(dir)tcs_bus_pybind.cpp
 
 # Not a target:
-tcs_bus/tcs_bus_pybind.cpp:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+libs/tcs_bus/reader_writer/common.h:
 #  Implicit rule search has been done.
-#  File does not exist.
-#  File has not been updated.
+#  Last modified 2022-06-01 10:12:17.384336097
+#  File has been updated.
+#  Successfully updated.
 
 # Not a target:
-tcs_bus/reader_writer/tcs_bus_writer.h:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-tcs_bus/reader_writer/common.h:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+libs/tcs_bus/reader_writer/tcs_bus_writer.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-06-01 10:12:17.384336097
+#  File has been updated.
+#  Successfully updated.
 
 # files hash-table stats:
-# Load=15/1024=1%, Rehash=0, Collisions=0/41=0%
+# Load=15/1024=1%, Rehash=0, Collisions=0/42=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 27 / storage = 422 B / avg = 15 B
-# current buf: size = 8174 B / used = 422 B / count = 27 / avg = 15 B
+# strcache buffers: 1 (0) / strings = 27 / storage = 452 B / avg = 16 B
+# current buf: size = 8174 B / used = 452 B / count = 27 / avg = 16 B
 
-# strcache performance: lookups = 43 / hit rate = 37%
+# strcache performance: lookups = 47 / hit rate = 42%
 # hash-table stats:
-# Load=27/8192=0%, Rehash=0, Collisions=0/43=0%
-# Finished Make data base on Wed Jun  1 10:12:40 2022
+# Load=27/8192=0%, Rehash=0, Collisions=0/47=0%
+# Finished Make data base on Wed Jun  1 10:20:16 2022
 
  
