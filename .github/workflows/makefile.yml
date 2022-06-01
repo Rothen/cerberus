@@ -20,9 +20,7 @@ jobs:
         architecture: 'x64'
     
     - name: Install WiringPI
-      run: |
-        wget https://project-downloads.drogon.net/wiringpi-latest.deb
-        sudo dpkg -i wiringpi-latest.deb
+      run: apt install -y wiringpi
       
     - name: Install pybind11
       run: python3 -m pip install pybind11
