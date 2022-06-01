@@ -1,0 +1,24 @@
+name: Makefile CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Install WiringPI
+      run: sudo apt-get install wiringpi
+      
+    - name: Install pybind11
+      run: pip install pybind11
+      
+    - name: Make
+      run: make
