@@ -20,7 +20,7 @@ jobs:
         architecture: 'x64'
     
     - name: Install WiringPI
-      run: apt install -y wiringpi
+      run: sudo apt install -y wiringpi
       
     - name: Install pybind11
       run: python3 -m pip install pybind11
