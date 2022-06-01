@@ -12,20 +12,21 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        arch: [armv7l]
+        include:
+        - arch: armv7l
+          cpu: cortex-a7
+          base_image: raspios_lite:latest
+          cpu_info: raspberrypi_3b
 
     steps:
     - uses: actions/checkout@v3
     
-    - uses: actions/setup-python@v3
-      with:
-        python-version: '3.9'
-        architecture: 'x64'
-
     - uses: pguyot/arm-runner-action@v2
-      id: build_image
       with:
-        base_image: dietpi:rpi_armv7_bullseye
+        base_image: ${{ matrix.base_image }}
+        cpu: ${{ matrix.cpu }}
+        cpu_info: ${{ matrix.cpu_info }}
         commands: |
             sudo apt-get install libwiringpi-dev
             python3 -m pip install pybind11
