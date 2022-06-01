@@ -21,25 +21,17 @@ jobs:
       with:
         python-version: '3.9'
         architecture: 'x64'
-    
-    - name: Install WiringPI
-      run: sudo apt-get install libwiringpi-dev
-      
-    - name: Install pybind11
-      run: python3 -m pip install pybind11
-      
-    - name: Make
-      run: make
 
-    - name: Install wheel
-      run: python3 -m pip install wheel
-
-    - name: Build wheels
-      run: python3 -m pip wheel -w dist .
-      # run: python3 -m cibuildwheel --output-dir dist
-      # to supply options, put them in 'env', like:
-      # env:
-      #   CIBW_SOME_OPTION: value
+    - uses: pguyot/arm-runner-action@v2
+      id: build_image
+      with:
+        base_image: dietpi:rpi_armv7_bullseye
+        commands: |
+            sudo apt-get install libwiringpi-dev
+            python3 -m pip install pybind11
+            make
+            python3 -m pip install wheel
+            python3 -m pip wheel -w dist .
 
     - uses: actions/upload-artifact@v2
       with:
