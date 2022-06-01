@@ -31,8 +31,8 @@ jobs:
     - name: Make
       run: make
 
-    - name: Install cibuildwheel
-      run: python3 -m pip install cibuildwheel==2.6.0
+    - name: Install wheel
+      run: python3 -m pip install wheel
 
     - name: Build wheels
       run: python3 -m pip wheel -w dist .
