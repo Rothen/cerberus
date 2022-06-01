@@ -1,6 +1,6 @@
 make --dry-run --always-make --keep-going --print-directory
-make: Entering directory '/home/pi/door_bell'
-make: Leaving directory '/home/pi/door_bell'
+make: Entering directory '/home/pi/cerberus'
+make: Leaving directory '/home/pi/cerberus'
  
 make: *** No targets specified and no makefile found.  Stop.
 

@@ -1,6 +1,6 @@
 CXX = g++
-dir = tcs_bus/
-output_dir = cerbers/tcs/
+dir = libs/tcs_bus/
+output_dir = cerberus/tcs/
 reader_writer_dir = $(dir)reader_writer/
 read_write_objects = tcs_bus_reader.o tcs_bus_writer.o
 pybind11_includes = -fPIC -I/usr/include/python3.9 -I/home/pi/.local/lib/python3.9/site-packages/pybind11/include
@@ -21,4 +21,4 @@ tcs_bus_writer.o: $(reader_writer_dir)tcs_bus_writer.cpp $(reader_writer_dir)tcs
 	$(CXX) -c $(reader_writer_dir)tcs_bus_writer.cpp
 
 clean :
-	-rm *.o
+	-rm *.o ${objects}
