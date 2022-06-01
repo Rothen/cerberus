@@ -23,7 +23,7 @@ jobs:
       run: sudo apt-get install wiringpi
       
     - name: Install pybind11
-      run: pip install pybind11
+      run: pip3 install pybind11
       
     - name: Make
       run: make
