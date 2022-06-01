@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name='cerberus',
@@ -6,7 +6,8 @@ setup(
     description='A useful module',
     author='Benajmin Ricchiuto',
     author_email='beni.ricchiuto@gmail.com',
-    packages=['cerberus'],
+    packages=find_packages(),
+    package_data={"": ["*.so"],},
     install_requires=['spidev', 'pybind11', 'reactivex', 'RPi.GPIO', 'websockets', 'asyncio'],
     entry_points={
         'console_scripts': [
