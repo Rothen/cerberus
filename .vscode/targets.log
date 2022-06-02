@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed Jun  1 10:20:16 2022
+# Make data base, printed on Thu Jun  2 10:35:08 2022
 
 # Variables
 
@@ -49,11 +49,11 @@ MAKEFLAGS = pqrR
 # makefile
 CURDIR := /home/pi/cerberus
 # makefile (from 'makefile', line 6)
-pybind11_includes = -fPIC -I/usr/include/python3.9 -I/home/pi/.local/lib/python3.9/site-packages/pybind11/include
+pybind11_includes = $$(python3 -m pybind11 --includes)
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
@@ -91,13 +91,13 @@ SHELL = /bin/sh
 # default
 MAKECMDGOALS := all
 # environment
-SHLVL = 1
+SHLVL = 0
 # environment
 MAKELEVEL := 0
 # default
 MAKE = $(MAKE_COMMAND)
 # environment
-PATH = /home/pi/.vscode-server/bin/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5/bin/remote-cli:/home/pi/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
+PATH = /home/pi/.vscode-server/bin/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5/bin/remote-cli:/home/pi/.local/bin:/home/pi/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
 # default
 MAKEFILES := 
 # environment
@@ -107,7 +107,7 @@ MOTD_SHOWN = pam
 # automatic
 ^F = $(notdir $^)
 # environment
-SSH_CLIENT = 2001:1620:51f8:1:d922:ea24:ed6e:4d2e 56395 22
+SSH_CLIENT = 192.168.1.51 50252 22
 # environment
 VSCODE_LOG_NATIVE = false
 # automatic
@@ -141,7 +141,7 @@ XDG_RUNTIME_DIR = /run/user/1000
 # makefile (from 'makefile', line 2)
 dir = libs/tcs_bus/
 # environment
-VSCODE_IPC_HOOK_CLI = /run/user/1000/vscode-ipc-a8eb3872-53d2-4684-84fb-17d2e1b283f0.sock
+VSCODE_IPC_HOOK_CLI = /run/user/1000/vscode-ipc-38c8844d-80b3-4386-8ca1-963a1958b163.sock
 # environment
 XDG_SESSION_CLASS = user
 # environment
@@ -151,7 +151,7 @@ reader_writer_dir = $(dir)reader_writer/
 # environment
 HOME = /home/pi
 # environment
-XDG_SESSION_ID = 4
+XDG_SESSION_ID = 95
 # default
 .RECIPEPREFIX := 
 # automatic
@@ -163,7 +163,7 @@ SUFFIXES :=
 # makefile (from 'makefile', line 1)
 CXX = g++
 # environment
-SSH_CONNECTION = 2001:1620:51f8:1:d922:ea24:ed6e:4d2e 56395 2001:1620:51f8:1:3ebb:85f9:aef7:74d3 22
+SSH_CONNECTION = 192.168.1.51 50252 192.168.1.100 22
 # variable set hash-table stats:
 # Load=77/1024=8%, Rehash=0, Collisions=2/128=2%
 
@@ -173,9 +173,9 @@ SSH_CONNECTION = 2001:1620:51f8:1:d922:ea24:ed6e:4d2e 56395 2001:1620:51f8:1:3eb
 
 # Directories
 
-# . (device 45826, inode 392432): 14 files, no impossibilities.
+# . (device 45826, inode 392432): 17 files, no impossibilities.
 
-# 14 files, no impossibilities in 1 directories.
+# 17 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -185,11 +185,11 @@ SSH_CONNECTION = 2001:1620:51f8:1:d922:ea24:ed6e:4d2e 56395 2001:1620:51f8:1:3eb
 
 tcs_bus_writer.o: libs/tcs_bus/reader_writer/tcs_bus_writer.cpp libs/tcs_bus/reader_writer/tcs_bus_writer.h libs/tcs_bus/reader_writer/common.h
 #  Implicit rule search has not been done.
-#  Last modified 2022-06-01 10:15:40.92437183
+#  Last modified 2022-06-01 10:25:36.714412844
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'makefile', line 21):
-	$(CXX) -c $(reader_writer_dir)tcs_bus_writer.cpp
+	$(CXX) -fPIC -c $(reader_writer_dir)tcs_bus_writer.cpp
 
 # Not a target:
 libs/tcs_bus/reader_writer/tcs_bus_reader.h:
@@ -237,7 +237,7 @@ pybind: tcs_bus_pybind.o tcs_bus_reader.o tcs_bus_writer.o
 # variable set hash-table stats:
 # Load=8/32=25%, Rehash=0, Collisions=5/15=33%
 #  recipe to execute (from 'makefile', line 12):
-	$(CXX) -O3 -Wall -shared -o $(output_dir)tcs_bus$(pybind11_suffix) tcs_bus_pybind.o $(read_write_objects) -lwiringPi -llgpio
+	$(CXX) -O3 -Wall -shared -o $(output_dir)tcs_bus$(pybind11_suffix) tcs_bus_pybind.o $(read_write_objects) -lwiringPi
 
 # Not a target:
 .DEFAULT:
@@ -256,11 +256,11 @@ all: pybind
 
 tcs_bus_reader.o: libs/tcs_bus/reader_writer/tcs_bus_reader.cpp libs/tcs_bus/reader_writer/tcs_bus_reader.h libs/tcs_bus/reader_writer/common.h
 #  Implicit rule search has not been done.
-#  Last modified 2022-06-01 10:15:39.074371575
+#  Last modified 2022-06-01 10:25:34.764412801
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'makefile', line 18):
-	$(CXX) -c $(reader_writer_dir)tcs_bus_reader.cpp
+	$(CXX) -fPIC -c $(reader_writer_dir)tcs_bus_reader.cpp
 
 # Not a target:
 libs/tcs_bus/tcs_bus_pybind.cpp:
@@ -272,6 +272,7 @@ libs/tcs_bus/tcs_bus_pybind.cpp:
 # Not a target:
 libs/tcs_bus/reader_writer/tcs_bus_reader.cpp:
 #  Implicit rule search has been done.
+ 
 #  Last modified 2022-06-01 10:12:17.384336097
 #  File has been updated.
 #  Successfully updated.
@@ -279,18 +280,17 @@ libs/tcs_bus/reader_writer/tcs_bus_reader.cpp:
 # Not a target:
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-01 10:17:08.024382619
+#  Last modified 2022-06-01 14:06:26.255435965
 #  File has been updated.
 #  Successfully updated.
 
 tcs_bus_pybind.o: libs/tcs_bus/tcs_bus_pybind.cpp
 #  Implicit rule search has not been done.
- 
-#  Last modified 2022-06-01 10:15:37.004371289
+#  Last modified 2022-06-01 10:25:31.744412732
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'makefile', line 15):
-	$(CXX) $(pybind11_includes) -c $(dir)tcs_bus_pybind.cpp
+	$(CXX) -fPIC $(pybind11_includes) -c $(dir)tcs_bus_pybind.cpp -lwiringPi
 
 # Not a target:
 .SUFFIXES:
@@ -320,12 +320,12 @@ libs/tcs_bus/reader_writer/tcs_bus_writer.h:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 27 / storage = 452 B / avg = 16 B
-# current buf: size = 8174 B / used = 452 B / count = 27 / avg = 16 B
+# strcache buffers: 1 (0) / strings = 30 / storage = 474 B / avg = 15 B
+# current buf: size = 8174 B / used = 474 B / count = 30 / avg = 15 B
 
-# strcache performance: lookups = 47 / hit rate = 42%
+# strcache performance: lookups = 50 / hit rate = 40%
 # hash-table stats:
-# Load=27/8192=0%, Rehash=0, Collisions=0/47=0%
-# Finished Make data base on Wed Jun  1 10:20:16 2022
+# Load=30/8192=0%, Rehash=0, Collisions=0/50=0%
+# Finished Make data base on Thu Jun  2 10:35:08 2022
 
  

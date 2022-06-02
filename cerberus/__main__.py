@@ -7,18 +7,56 @@ import asyncio
 from cerberus.const import *
 from cerberus.tcs import TCSBusReader, TCSBusWriter, wiringPiSetupGpio
 from cerberus.worker import TCSTunnelWorker, WSWorker, TCSBusWorker, UARTWorker
+import argparse
+
+def parse_arguments() -> None:
+    argparser = argparse.ArgumentParser(
+        description=__doc__)
+
+    argparser.add_argument(
+        '-l', '--listen',
+        metavar='L',
+        default=WS_IP,
+        help='IP of the WebSocket server to listen on (default: %s)' % (WS_IP))
+    argparser.add_argument(
+        '-p', '--port',
+        metavar='P',
+        default=WS_PORT,
+        type=int,
+        help='TCP port to listen to (default: %i)' % (WS_PORT))
+    argparser.add_argument(
+        '-i', '--interrupt-pin',
+        metavar='I',
+        default=INTERRUPT_PIN,
+        type=int,
+        help='Pin number where to write the interrupt to (default: %i)' % (INTERRUPT_PIN))
+    argparser.add_argument(
+        '-r', '--read-pin',
+        metavar='R',
+        default=READ_PIN,
+        type=int,
+        help='TCS read pin number (default: %i)' % (READ_PIN))
+    argparser.add_argument(
+        '-w', '--write-pin',
+        metavar='W',
+        default=WRITE_PIN,
+        type=int,
+        help='TCS write pin number (default: %i)' % (WRITE_PIN))
+
+    return argparser.parse_args()
+
 def main(args=None):
     GPIO.setmode(GPIO.BCM)
     wiringPiSetupGpio()
 
     use_uart = False
 
-    tcs_bus_worker = TCSBusWorker(TCSBusReader(READ_PIN), TCSBusWriter(WRITE_PIN))
+    tcs_bus_worker = TCSBusWorker(TCSBusReader(args.read_pin), TCSBusWriter(args.write_pin))
 
     uart_worker = UARTWorker()
-    tcs_tunnel_worker = TCSTunnelWorker(INTERRUPT_PIN)
+    tcs_tunnel_worker = TCSTunnelWorker(args.interrupt_pin)
 
-    ws_worker = WSWorker(uart_worker if use_uart else tcs_bus_worker)
+    ws_worker = WSWorker(uart_worker if use_uart else tcs_bus_worker, ip=args.listen, port=args.port)
 
     def exit_signal_handler(sig, frame):
         if not use_uart:
@@ -42,4 +80,5 @@ def main(args=None):
     asyncio.get_event_loop().run_forever()
 
 if __name__ == '__main__':
-    sys.exit(main())
+    args = parse_arguments()
+    sys.exit(main(args))
