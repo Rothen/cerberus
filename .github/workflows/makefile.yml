@@ -9,12 +9,34 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+
+    - name: Install Arm none eabi gcc 
+      uses: carlosperate/arm-none-eabi-gcc-action@v1
+      run: arm-none-eabi-gcc --version
+
+    - name: Install pybind11
+      run: python3 -m pip install pybind11
+
+    - name: Install Wiring Pi
+      run: sudo apt-get install wiringpi
       
     - name: Make
       run: make
+
+    - name: Compile tcs_bus_writer.cpp
+      run: arm-none-eabi-gcc -fPIC -c libs/tcs_bus/reader_writer/tcs_bus_writer.cpp
+
+    - name: Compile tcs_bus_reader.cpp
+      run: arm-none-eabi-gcc -fPIC -c libs/tcs_bus/reader_writer/tcs_bus_reader.cpp
+
+    - name: Compile tcs_bus_pybind.cpp
+      run: arm-none-eabi-gcc -fPIC $(python3 -m pybind11 --includes) -c libs/tcs_bus/tcs_bus_pybind.cpp -lwiringPi
+
+    - name: Link files
+      run: arm-none-eabi-gcc -O3 -Wall -shared -o cerberus/tcs/tcs_bus.cpython-39-arm-linux-gnueabihf.so tcs_bus_pybind.o tcs_bus_reader.o tcs_bus_writer.o -lwiringPi
 
     - name: Build wheels
       run: python3 -m pip wheel -w dist .
