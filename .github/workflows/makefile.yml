@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: carlosperate/arm-none-eabi-gcc-action@v1
 
     - name: Show Arm none eabi gcc 
       run: arm-none-eabi-gcc --version
@@ -21,7 +20,12 @@ jobs:
       run: python3 -m pip install pybind11
 
     - name: Install Wiring Pi
-      run: sudo apt install -y libwiringpi-dev
+      run: sudo apt install -y libwiringpi-dev:armhf
+
+    - name: Show include Paths
+      run: arm-none-eabi-gcc -xc++ -E -v -
+
+    - uses: carlosperate/arm-none-eabi-gcc-action@v1
 
     - name: Compile tcs_bus_writer.cpp
       run: arm-none-eabi-gcc -fPIC -c libs/tcs_bus/reader_writer/tcs_bus_writer.cpp
