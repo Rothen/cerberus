@@ -12,6 +12,7 @@ setup(
     entry_points={
         'console_scripts': [
             'cerberus = cerberus.__main__:main',
+            'cerberus-api-token-gen = cerberus.api.generate_api_token:main'
         ],
     }
 )

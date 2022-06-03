@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu Jun  2 10:35:08 2022
+# Make data base, printed on Thu Jun  2 23:45:37 2022
 
 # Variables
 
@@ -91,7 +91,7 @@ SHELL = /bin/sh
 # default
 MAKECMDGOALS := all
 # environment
-SHLVL = 0
+SHLVL = 1
 # environment
 MAKELEVEL := 0
 # default
@@ -107,7 +107,7 @@ MOTD_SHOWN = pam
 # automatic
 ^F = $(notdir $^)
 # environment
-SSH_CLIENT = 192.168.1.51 50252 22
+SSH_CLIENT = 192.168.1.51 53213 22
 # environment
 VSCODE_LOG_NATIVE = false
 # automatic
@@ -141,7 +141,7 @@ XDG_RUNTIME_DIR = /run/user/1000
 # makefile (from 'makefile', line 2)
 dir = libs/tcs_bus/
 # environment
-VSCODE_IPC_HOOK_CLI = /run/user/1000/vscode-ipc-38c8844d-80b3-4386-8ca1-963a1958b163.sock
+VSCODE_IPC_HOOK_CLI = /run/user/1000/vscode-ipc-8a24034c-7c53-44de-8d17-8b65c7b3d1ae.sock
 # environment
 XDG_SESSION_CLASS = user
 # environment
@@ -151,7 +151,7 @@ reader_writer_dir = $(dir)reader_writer/
 # environment
 HOME = /home/pi
 # environment
-XDG_SESSION_ID = 95
+XDG_SESSION_ID = 107
 # default
 .RECIPEPREFIX := 
 # automatic
@@ -163,7 +163,7 @@ SUFFIXES :=
 # makefile (from 'makefile', line 1)
 CXX = g++
 # environment
-SSH_CONNECTION = 192.168.1.51 50252 192.168.1.100 22
+SSH_CONNECTION = 192.168.1.51 53213 192.168.1.100 22
 # variable set hash-table stats:
 # Load=77/1024=8%, Rehash=0, Collisions=2/128=2%
 
@@ -272,7 +272,6 @@ libs/tcs_bus/tcs_bus_pybind.cpp:
 # Not a target:
 libs/tcs_bus/reader_writer/tcs_bus_reader.cpp:
 #  Implicit rule search has been done.
- 
 #  Last modified 2022-06-01 10:12:17.384336097
 #  File has been updated.
 #  Successfully updated.
@@ -326,6 +325,6 @@ libs/tcs_bus/reader_writer/tcs_bus_writer.h:
 # strcache performance: lookups = 50 / hit rate = 40%
 # hash-table stats:
 # Load=30/8192=0%, Rehash=0, Collisions=0/50=0%
-# Finished Make data base on Thu Jun  2 10:35:08 2022
+# Finished Make data base on Thu Jun  2 23:45:37 2022
 
  

@@ -6,3 +6,4 @@ __pycache__/
 *.o
 commands.log
 dist/
+api_tokens.pkl

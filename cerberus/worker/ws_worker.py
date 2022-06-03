@@ -6,6 +6,7 @@ import asyncio
 import threading
 import time
 
+from cerberus.api import APITokenContainer
 from cerberus.const import *
 from cerberus.command_event import CommandEvent
 from cerberus.worker import TCSCommunicator
@@ -14,6 +15,7 @@ class WSWorker (threading.Thread):
     ip: str
     port: int
 
+    _api_token_container: APITokenContainer
     _subscription: Subject
     _stop_flag: bool
     _connected: set
@@ -33,6 +35,7 @@ class WSWorker (threading.Thread):
         self.requests = WS_REQUESTS
         self.prepare_commands()
 
+        self._api_token_container = APITokenContainer()
         self._subscription = self._tcs_communicator.command_read.subscribe(
             on_next = self.command_read
         )
@@ -47,19 +50,24 @@ class WSWorker (threading.Thread):
         self._tcs_communicator.start()
 
     def prepare_commands(self) -> None:
-            self.requests['RING_UPSTAIRS']['fn'] = self.send_ring_upstairs
-            self.requests['RING_DOWNSTAIRS']['fn'] = self.send_ring_downstairs
-            self.requests['CANCEL_VOICE_CONTROL_SEQUENCE']['fn'] = self.send_cancel_voice_control_sequence
-            self.requests['CANCEL_CONTROL_SEQUENCE']['fn'] = self.send_cancel_control_sequence
-            self.requests['OPEN_DOOR']['fn'] = self.send_open_door
-            self.requests['OPEN_VOICE_CHANNEL']['fn'] = self.send_open_voice_channel
-            self.requests['CONTROL_SEQUENCE']['fn'] = self.send_control_sequence
+        self.requests['RING_UPSTAIRS']['fn'] = self.send_ring_upstairs
+        self.requests['RING_DOWNSTAIRS']['fn'] = self.send_ring_downstairs
+        self.requests['CANCEL_VOICE_CONTROL_SEQUENCE']['fn'] = self.send_cancel_voice_control_sequence
+        self.requests['CANCEL_CONTROL_SEQUENCE']['fn'] = self.send_cancel_control_sequence
+        self.requests['OPEN_DOOR']['fn'] = self.send_open_door
+        self.requests['OPEN_VOICE_CHANNEL']['fn'] = self.send_open_voice_channel
+        self.requests['CONTROL_SEQUENCE']['fn'] = self.send_control_sequence
 
     def run(self):
         while not self._stop_flag:
             time.sleep(0.04)
 
-    async def handler(self, websocket, path):
+    async def handler(self, websocket, path: str):
+        token = websocket.recv()
+
+        if not self._api_token_container.check(token):
+            websocket.close(1008, 'API Token not registered.')
+
         self._connected.add(websocket)
         try:
             while True:
@@ -83,6 +91,11 @@ class WSWorker (threading.Thread):
         self._tcs_communicator.stop()
         self._subscription.dispose()
         self._stop_flag = True
+
+        for websocket in self._connected.copy():
+            websocket.close(1001)
+            self._connected.remove(websocket)
+
         self.join()
 
     def command_read(self, command_event: CommandEvent) -> None:

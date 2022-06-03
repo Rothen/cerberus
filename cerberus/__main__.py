@@ -9,7 +9,7 @@ from cerberus.tcs import TCSBusReader, TCSBusWriter, wiringPiSetupGpio
 from cerberus.worker import TCSTunnelWorker, WSWorker, TCSBusWorker, UARTWorker
 import argparse
 
-def parse_arguments() -> None:
+def parse_arguments() -> argparse.Namespace:
     argparser = argparse.ArgumentParser(
         description=__doc__)
 
@@ -46,6 +46,7 @@ def parse_arguments() -> None:
     return argparser.parse_args()
 
 def main(args=None):
+    args = parse_arguments()
     GPIO.setmode(GPIO.BCM)
     wiringPiSetupGpio()
 
@@ -80,5 +81,4 @@ def main(args=None):
     asyncio.get_event_loop().run_forever()
 
 if __name__ == '__main__':
-    args = parse_arguments()
-    sys.exit(main(args))
+    sys.exit(main())
