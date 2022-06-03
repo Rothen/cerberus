@@ -63,9 +63,9 @@ class WSWorker (threading.Thread):
             time.sleep(0.04)
 
     async def handler(self, websocket, path: str):
-        token = websocket.recv()
+        api_token = websocket.recv()
 
-        if not self._api_token_container.check(token):
+        if not self._api_token_container.check(api_token):
             websocket.close(1008, 'API Token not registered.')
 
         self._connected.add(websocket)
