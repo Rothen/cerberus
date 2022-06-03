@@ -22,9 +22,6 @@ jobs:
 
     - name: Install Wiring Pi
       run: sudo apt-get install wiringpi
-      
-    - name: Make
-      run: make
 
     - name: Compile tcs_bus_writer.cpp
       run: arm-none-eabi-gcc -fPIC -c libs/tcs_bus/reader_writer/tcs_bus_writer.cpp
