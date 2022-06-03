@@ -21,7 +21,7 @@ jobs:
       run: python3 -m pip install pybind11
 
     - name: Install Wiring Pi
-      run: sudo apt-get install wiringpi
+      run: sudo apt install -y libwiringpi-dev
 
     - name: Compile tcs_bus_writer.cpp
       run: arm-none-eabi-gcc -fPIC -c libs/tcs_bus/reader_writer/tcs_bus_writer.cpp
