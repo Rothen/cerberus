@@ -6,7 +6,7 @@ import RPi.GPIO as GPIO
 import asyncio
 from cerberus.const import *
 from cerberus.tcs import TCSBusReader, TCSBusWriter, wiringPiSetupGpio
-from cerberus.worker import TCSTunnelWorker, WSWorker, TCSBusWorker, UARTWorker
+from cerberus.worker import TCSTunnelWorker, WSWorker, TCSBusWorker, UARTWorker, HomeAssistantWorker
 import argparse
 
 def parse_arguments() -> argparse.Namespace:
@@ -58,10 +58,18 @@ def main(args=None):
     tcs_tunnel_worker = TCSTunnelWorker(args.interrupt_pin)
 
     ws_worker = WSWorker(uart_worker if use_uart else tcs_bus_worker, ip=args.listen, port=args.port)
+    home_assistant_worker = HomeAssistantWorker(
+        uart_worker if use_uart else tcs_bus_worker,
+        HOME_ASSISTANT_URL,
+        HOME_ASSISTANT_API_TOKEN,
+        HOME_ASSISTANT_GOOGLE_HOME_ENTITY_ID
+    )
 
     def exit_signal_handler(sig, frame):
         if not use_uart:
             tcs_tunnel_worker.stop()
+
+        (uart_worker if use_uart else tcs_bus_worker).stop()
 
         ws_worker.stop()
 
@@ -77,6 +85,9 @@ def main(args=None):
 
     print('Starting Websocket Worker')
     ws_worker.start()
+
+    print('Starting %s' % ((uart_worker if use_uart else tcs_bus_worker).name))
+    (uart_worker if use_uart else tcs_bus_worker).start()
 
     asyncio.get_event_loop().run_forever()
 

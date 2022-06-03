@@ -11,7 +11,7 @@ from cerberus.const import *
 from cerberus.command_event import CommandEvent
 from cerberus.worker import TCSCommunicator
 
-class WSWorker (threading.Thread):
+class WSWorker(threading.Thread):
     ip: str
     port: int
 
@@ -23,6 +23,8 @@ class WSWorker (threading.Thread):
     _loop: asyncio.AbstractEventLoop
     _tcs_communicator: TCSCommunicator
 
+    _requests = {}
+
     def __init__(self, tcs_communicator: TCSCommunicator, ip: str = '0.0.0.0', port: int = 7700):
         threading.Thread.__init__(self)
 
@@ -32,7 +34,6 @@ class WSWorker (threading.Thread):
         
         self._stop_flag = False
         self._connected = set()
-        self.requests = WS_REQUESTS
         self.prepare_commands()
 
         self._api_token_container = APITokenContainer()
@@ -44,19 +45,14 @@ class WSWorker (threading.Thread):
         self._loop = asyncio.get_event_loop()
         self._loop.run_until_complete(self._ws_server)
 
-    def start(self) -> None:
-        super().start()
-        print('Starting %s' % (self._tcs_communicator.name))
-        self._tcs_communicator.start()
-
     def prepare_commands(self) -> None:
-        self.requests['RING_UPSTAIRS']['fn'] = self.send_ring_upstairs
-        self.requests['RING_DOWNSTAIRS']['fn'] = self.send_ring_downstairs
-        self.requests['CANCEL_VOICE_CONTROL_SEQUENCE']['fn'] = self.send_cancel_voice_control_sequence
-        self.requests['CANCEL_CONTROL_SEQUENCE']['fn'] = self.send_cancel_control_sequence
-        self.requests['OPEN_DOOR']['fn'] = self.send_open_door
-        self.requests['OPEN_VOICE_CHANNEL']['fn'] = self.send_open_voice_channel
-        self.requests['CONTROL_SEQUENCE']['fn'] = self.send_control_sequence
+        self._requests['RING_UPSTAIRS'] = self.send_ring_upstairs
+        self._requests['RING_DOWNSTAIRS'] = self.send_ring_downstairs
+        self._requests['CANCEL_VOICE_CONTROL_SEQUENCE'] = self.send_cancel_voice_control_sequence
+        self._requests['CANCEL_CONTROL_SEQUENCE'] = self.send_cancel_control_sequence
+        self._requests['OPEN_DOOR'] = self.send_open_door
+        self._requests['OPEN_VOICE_CHANNEL'] = self.send_open_voice_channel
+        self._requests['CONTROL_SEQUENCE'] = self.send_control_sequence
 
     def run(self):
         while not self._stop_flag:
@@ -72,12 +68,12 @@ class WSWorker (threading.Thread):
         try:
             while True:
                 command_value = await websocket.recv()
-                if not command_value in self.requests.keys():
+                if not command_value in self._requests:
                     continue
 
                 print('Web Socket Recieved: ' + command_value)
-                command = self.requests[command_value]
-                command['fn']()
+                request_fn = self._requests[command_value]
+                request_fn()
 
 
         except websockets.exceptions.ConnectionClosed:
@@ -88,7 +84,6 @@ class WSWorker (threading.Thread):
             pass
 
     def stop(self):
-        self._tcs_communicator.stop()
         self._subscription.dispose()
         self._stop_flag = True
 

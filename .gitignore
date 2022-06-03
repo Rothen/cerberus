@@ -8,3 +8,4 @@ commands.log
 dist/
 api_tokens.pkl
 commands_log.csv
+tests/test_ha_lib.py
