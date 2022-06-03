@@ -13,6 +13,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - uses: carlosperate/arm-none-eabi-gcc-action@v1
+
     - name: Show Arm none eabi gcc 
       run: arm-none-eabi-gcc --version
 
@@ -24,8 +26,6 @@ jobs:
 
     - name: Show include Paths
       run: arm-none-eabi-gcc -xc++ -E -v -
-
-    - uses: carlosperate/arm-none-eabi-gcc-action@v1
 
     - name: Compile tcs_bus_writer.cpp
       run: arm-none-eabi-gcc -fPIC -c libs/tcs_bus/reader_writer/tcs_bus_writer.cpp
