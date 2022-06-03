@@ -9,38 +9,37 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v3
+    
+    - uses: uraimo/run-on-arch-action@v2
+        name: Run commands
+        id: runcmd
+        with:
+          arch: armv7
+          distro: ubuntu18.04
 
-    - uses: carlosperate/arm-none-eabi-gcc-action@v1
+          # Set an output parameter `uname` for use in subsequent steps
+          run: |
+            uname -a
+            echo ::set-output name=uname::$(uname -a)
+            python3 -m pip install pybind11
+            sudo apt install -y libwiringpi
+            make
+            python3 -m pip wheel -w dist .
 
-    - name: Show Arm none eabi gcc 
-      run: arm-none-eabi-gcc --version
+    # - name: Install pybind11
+      # run: python3 -m pip install pybind11
 
-    - name: Install pybind11
-      run: python3 -m pip install pybind11
+    # - name: Install Wiring Pi
+      # run: sudo apt install -y libwiringpi-dev
 
-    - name: Install Wiring Pi
-      run: sudo apt install -y libwiringpi-dev:armhf
-
-    - name: Show include Paths
-      run: arm-none-eabi-gcc -xc++ -E -v -
-
-    - name: Compile tcs_bus_writer.cpp
-      run: arm-none-eabi-gcc -fPIC -c libs/tcs_bus/reader_writer/tcs_bus_writer.cpp
-
-    - name: Compile tcs_bus_reader.cpp
-      run: arm-none-eabi-gcc -fPIC -c libs/tcs_bus/reader_writer/tcs_bus_reader.cpp
-
-    - name: Compile tcs_bus_pybind.cpp
-      run: arm-none-eabi-gcc -fPIC $(python3 -m pybind11 --includes) -c libs/tcs_bus/tcs_bus_pybind.cpp -lwiringPi
-
-    - name: Link files
-      run: arm-none-eabi-gcc -O3 -Wall -shared -o cerberus/tcs/tcs_bus.cpython-39-arm-linux-gnueabihf.so tcs_bus_pybind.o tcs_bus_reader.o tcs_bus_writer.o -lwiringPi
-
-    - name: Build wheels
-      run: python3 -m pip wheel -w dist .
+    # - name: Make
+      # run: make
+      
+    # - name: Build wheels
+      # run: python3 -m pip wheel -w dist .
 
     - uses: actions/upload-artifact@v2
       with:
