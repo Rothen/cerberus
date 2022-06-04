@@ -54,12 +54,12 @@ class HomeAssistantWorker:
 
     def send_ring_upstairs(self) -> None:
         self.__ring(self._doorbell_media['downstairs'])
-        sleep(3)
+        sleep(1.5)
         self.__announce('Someone\'s at the front door.')
 
     def send_ring_downstairs(self) -> None:
         self.__ring(self._doorbell_media['upstairs'])
-        sleep(3)
+        sleep(1.5)
         self.__announce('Someone\'s at the door downstairs.')
 
     def __ring(self, media_dict: dict) -> Response:
