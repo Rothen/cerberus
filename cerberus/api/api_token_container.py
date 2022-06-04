@@ -56,6 +56,8 @@ class APITokenContainer:
         return hash in self.__api_tokens
 
     def __create_hash(self, api_token: str) -> str:
+        if api_token is None:
+            return None
         m = hashlib.sha256()
         m.update(bytes(api_token, encoding='utf8'))
         return m.hexdigest()

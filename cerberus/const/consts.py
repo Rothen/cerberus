@@ -61,26 +61,53 @@ WEB_SOCKET_COMMANDS = dict([
     (CONTROL_SEQUENCE, 'CONTROL_SEQUENCE')
 ])
 
+HOME_ASSISTANT_COMMANDS = dict([
+    (RING_UPSTAIRS, {
+        'command': RING_UPSTAIRS,
+        'name': 'RING_UPSTAIRS',
+        'fn': None
+    }),
+    (RING_DOWNSTAIRS, {
+        'command': RING_DOWNSTAIRS,
+        'name': 'RING_DOWNSTAIRS',
+        'fn': None
+    })
+])
+
 WS_REQUESTS = dict([
     ('OPEN_DOOR', {
-        'command': OPEN_DOOR
+        'command': OPEN_DOOR,
+        'name': 'OPEN_DOOR',
+        'fn': None
     }),
     ('OPEN_VOICE_CHANNEL', {
-        'command': OPEN_VOICE_CHANNEL
+        'command': OPEN_VOICE_CHANNEL,
+        'name': 'OPEN_VOICE_CHANNEL',
+        'fn': None
     }),
     ('RING_UPSTAIRS', {
-        'command': RING_UPSTAIRS
+        'command': RING_UPSTAIRS,
+        'name': 'RING_UPSTAIRS',
+        'fn': None
     }),
     ('RING_DOWNSTAIRS', {
-        'command': RING_DOWNSTAIRS
+        'command': RING_DOWNSTAIRS,
+        'name': 'RING_DOWNSTAIRS',
+        'fn': None
     }),
     ('CANCEL_CONTROL_SEQUENCE', {
-        'command': CANCEL_CONTROL_SEQUENCE
+        'command': CANCEL_CONTROL_SEQUENCE,
+        'name': 'CANCEL_CONTROL_SEQUENCE',
+        'fn': None
     }),
     ('CANCEL_VOICE_CONTROL_SEQUENCE', {
-        'command': CANCEL_VOICE_CONTROL_SEQUENCE
+        'command': CANCEL_VOICE_CONTROL_SEQUENCE,
+        'name': 'CANCEL_VOICE_CONTROL_SEQUENCE',
+        'fn': None
     }),
     ('CONTROL_SEQUENCE', {
-        'command': CONTROL_SEQUENCE
+        'command': CONTROL_SEQUENCE,
+        'name': 'CONTROL_SEQUENCE',
+        'fn': None
     })
 ])

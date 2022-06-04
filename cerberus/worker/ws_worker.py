@@ -59,12 +59,21 @@ class WSWorker(threading.Thread):
             time.sleep(0.04)
 
     async def handler(self, websocket, path: str):
-        api_token = websocket.recv()
+        try:
+            api_token = await asyncio.wait_for(websocket.recv(), timeout=5)
 
-        if not self._api_token_container.check(api_token):
-            websocket.close(1008, 'API Token not registered.')
+            if not self._api_token_container.check(api_token):
+                print('API Token not registered.')
+                await websocket.close(1008, 'API Token not registered.')
+                return
 
-        self._connected.add(websocket)
+            self._connected.add(websocket)
+            print('API Token registered.')
+        except asyncio.exceptions.TimeoutError:
+            print('API Token not delivered.')
+            await websocket.close(1008, 'API Token not delivered.')
+            return
+
         try:
             while True:
                 command_value = await websocket.recv()
@@ -88,7 +97,7 @@ class WSWorker(threading.Thread):
         self._stop_flag = True
 
         for websocket in self._connected.copy():
-            websocket.close(1001)
+            self._loop.create_task(websocket.close(1001))
             self._connected.remove(websocket)
 
         self.join()

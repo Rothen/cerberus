@@ -62,7 +62,8 @@ def main(args=None):
         uart_worker if use_uart else tcs_bus_worker,
         HOME_ASSISTANT_URL,
         HOME_ASSISTANT_API_TOKEN,
-        HOME_ASSISTANT_GOOGLE_HOME_ENTITY_ID
+        HOME_ASSISTANT_GOOGLE_HOME_ENTITY_ID,
+        HOME_ASSISTAND_MEDIA
     )
 
     def exit_signal_handler(sig, frame):

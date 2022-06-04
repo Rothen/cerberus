@@ -3,12 +3,12 @@
 import threading
 import time
 from datetime import datetime
-from reactivex import Subject
-from abc import abstractmethod
+from reactivex import Subject, operators as op
+from abc import ABC, abstractmethod
 
 from cerberus.command_event import CommandEvent
 
-class TCSCommunicator(threading.Thread):
+class TCSCommunicator(threading.Thread, ABC):
     command_read: Subject[CommandEvent] = Subject()
 
     name: str
@@ -38,9 +38,13 @@ class TCSCommunicator(threading.Thread):
             cmd_event: CommandEvent = self._read_commmand()
 
             if cmd_event is not None:
-                self.command_read.on_next(cmd_event)
-                self.write_to_log(cmd_event)
-                print('Read %s' % (hex(cmd_event.cmd)))
+                if cmd_event.distance <= 3:
+                    self.command_read.on_next(cmd_event)
+                    self.write_to_log(cmd_event)
+                else:
+                    self.write_to_error(cmd_event)
+
+                print('TCS Bus Read %s (%s)' % (hex(cmd_event.cmd), hex(cmd_event.original_command)))
 
             self._read_flag = False
             time.sleep(0.1)
@@ -57,5 +61,11 @@ class TCSCommunicator(threading.Thread):
         self._write_commmand(cmd)
 
     def write_to_log(self, cmd_event: CommandEvent) -> None:
-        with open("commands_log.csv", "a") as myfile:
-            myfile.write("%s;%s;%s;%i;%i;%i;%i\n" % (datetime.now(), hex(cmd_event.original_command), hex(cmd_event.cmd), cmd_event.distance, cmd_event.crc, cmd_event.calc_crc, cmd_event.cmd_length))
+        self._write_to(cmd_event, "commands_log.csv")
+
+    def write_to_error_log(self, cmd_event: CommandEvent) -> None:
+        self._write_to(cmd_event, "error_log.csv")
+
+    def _write_to(self, cmd_event: CommandEvent, file_name: str) -> None:
+        with open(file_name, "a") as log_file:
+            log_file.write("%s;%s;%s;%i;%i;%i;%i\n" % (datetime.now(), hex(cmd_event.original_command), hex(cmd_event.cmd), cmd_event.distance, cmd_event.crc, cmd_event.calc_crc, cmd_event.cmd_length))
