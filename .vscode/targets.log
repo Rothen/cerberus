@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Jun  3 09:01:55 2022
+# Make data base, printed on Sat Jun  4 15:23:31 2022
 
 # Variables
 
@@ -91,7 +91,9 @@ SHELL = /bin/sh
 # default
 MAKECMDGOALS := all
 # environment
-SHLVL = 1
+PLATFORMIO_CALLER = vscode
+# environment
+SHLVL = 0
 # environment
 MAKELEVEL := 0
 # default
@@ -107,11 +109,13 @@ MOTD_SHOWN = pam
 # automatic
 ^F = $(notdir $^)
 # environment
-SSH_CLIENT = 2001:1620:51f8:1:f48c:6780:40a2:e444 60573 22
+SSH_CLIENT = 2001:1620:51f8:1:bdfb:4a8e:4c2:ef5f 51000 22
 # environment
 VSCODE_LOG_NATIVE = false
 # automatic
 ?F = $(notdir $?)
+# environment
+NO_PROXY = 127.0.0.1
 # environment
 LS_COLORS = 
 # automatic
@@ -124,6 +128,8 @@ GNUMAKEFLAGS :=
 BROWSER = /home/pi/.vscode-server/bin/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5/bin/helpers/browser.sh
 # environment
 LOGNAME = pi
+# environment
+PLATFORMIO_PATH = /home/pi/.platformio/python3/bin:/home/pi/.vscode-server/bin/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5/bin/remote-cli:/home/pi/.local/bin:/home/pi/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
 # makefile
 .DEFAULT_GOAL := all
 # environment
@@ -141,17 +147,19 @@ XDG_RUNTIME_DIR = /run/user/1000
 # makefile (from 'makefile', line 2)
 dir = libs/tcs_bus/
 # environment
-VSCODE_IPC_HOOK_CLI = /run/user/1000/vscode-ipc-66136872-77cd-4ed9-8651-865f44da6651.sock
+VSCODE_IPC_HOOK_CLI = /run/user/1000/vscode-ipc-5121a1ad-8158-4079-b541-f5495900c161.sock
 # environment
 XDG_SESSION_CLASS = user
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+PLATFORMIO_IDE = 2.4.3
 # makefile (from 'makefile', line 4)
 reader_writer_dir = $(dir)reader_writer/
 # environment
 HOME = /home/pi
 # environment
-XDG_SESSION_ID = 132
+XDG_SESSION_ID = 6
 # default
 .RECIPEPREFIX := 
 # automatic
@@ -163,9 +171,9 @@ SUFFIXES :=
 # makefile (from 'makefile', line 1)
 CXX = g++
 # environment
-SSH_CONNECTION = 2001:1620:51f8:1:f48c:6780:40a2:e444 60573 2001:1620:51f8:1:3ebb:85f9:aef7:74d3 22
+SSH_CONNECTION = 2001:1620:51f8:1:bdfb:4a8e:4c2:ef5f 51000 2001:1620:51f8:1:3ebb:85f9:aef7:74d3 22
 # variable set hash-table stats:
-# Load=77/1024=8%, Rehash=0, Collisions=2/128=2%
+# Load=81/1024=8%, Rehash=0, Collisions=9/132=7%
 
 # Pattern-specific Variable Values
 
@@ -173,9 +181,9 @@ SSH_CONNECTION = 2001:1620:51f8:1:f48c:6780:40a2:e444 60573 2001:1620:51f8:1:3eb
 
 # Directories
 
-# . (device 45826, inode 392432): 17 files, no impossibilities.
+# . (device 45826, inode 392432): 18 files, no impossibilities.
 
-# 17 files, no impossibilities in 1 directories.
+# 18 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -249,6 +257,7 @@ all: pybind
 #  Command line target.
 #  Implicit rule search has been done.
 #  File does not exist.
+ 
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # variable set hash-table stats:
@@ -285,7 +294,6 @@ makefile:
 
 tcs_bus_pybind.o: libs/tcs_bus/tcs_bus_pybind.cpp
 #  Implicit rule search has not been done.
- 
 #  Last modified 2022-06-01 10:25:31.744412732
 #  File has been updated.
 #  Successfully updated.
@@ -320,12 +328,12 @@ libs/tcs_bus/reader_writer/tcs_bus_writer.h:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 30 / storage = 472 B / avg = 15 B
-# current buf: size = 8174 B / used = 472 B / count = 30 / avg = 15 B
+# strcache buffers: 1 (0) / strings = 31 / storage = 489 B / avg = 15 B
+# current buf: size = 8174 B / used = 489 B / count = 31 / avg = 15 B
 
-# strcache performance: lookups = 50 / hit rate = 40%
+# strcache performance: lookups = 51 / hit rate = 39%
 # hash-table stats:
-# Load=30/8192=0%, Rehash=0, Collisions=0/50=0%
-# Finished Make data base on Fri Jun  3 09:01:55 2022
+# Load=31/8192=0%, Rehash=0, Collisions=0/51=0%
+# Finished Make data base on Sat Jun  4 15:23:31 2022
 
  

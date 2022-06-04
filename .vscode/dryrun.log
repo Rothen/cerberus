@@ -2,6 +2,7 @@ make --dry-run --always-make --keep-going --print-directory
 make: Entering directory '/home/pi/cerberus'
 g++ -fPIC $(python3 -m pybind11 --includes) -c libs/tcs_bus/tcs_bus_pybind.cpp -lwiringPi
 g++ -fPIC -c libs/tcs_bus/reader_writer/tcs_bus_reader.cpp
+ 
 g++ -fPIC -c libs/tcs_bus/reader_writer/tcs_bus_writer.cpp
 g++ -O3 -Wall -shared -o cerberus/tcs/tcs_bus.cpython-39-arm-linux-gnueabihf.so tcs_bus_pybind.o tcs_bus_reader.o tcs_bus_writer.o -lwiringPi
 make: Leaving directory '/home/pi/cerberus'
