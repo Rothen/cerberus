@@ -10,5 +10,5 @@ OPEN_VOICE_CHANNEL = 0x309E8100
 CONTROL_SEQUENCE = 0x5802
 
 ser = serial.Serial("/dev/ttyS0", 9600)
-ser.write(bytes('%s\r\n' % (hex(OPEN_DOOR)), 'utf-8'))
+ser.write(bytes('%s\r\n' % (hex(RING_UPSTAIRS)), 'utf-8'))
 ser.close()

@@ -14,7 +14,7 @@ class CommandEvent:
         self.__calculate_nearest_command(self.original_command, cmd_length)
 
     def __calculate_nearest_command(self, cmd: int, length: int) -> tuple:
-        distance = float('inf')
+        hamming_distance = float('inf')
         nearest_command = 0x0
 
         commands_to_check = LONG_COMMANDS
@@ -23,16 +23,17 @@ class CommandEvent:
             commands_to_check = SHORT_COMMANDS
 
         for control_key in commands_to_check:
-            hamming_distance = self.hamming_distance(cmd, commands_to_check[control_key])
+            current_hamming_distance = self.calculate_hamming_distance(cmd, commands_to_check[control_key])
 
-            if distance > hamming_distance:
-                distance = hamming_distance
+            if hamming_distance > current_hamming_distance:
+                hamming_distance = current_hamming_distance
                 nearest_command = commands_to_check[control_key]
 
         self.cmd = nearest_command
-        self.distance = distance
+        self.hamming_distance = hamming_distance
+        self.distance = int(bin(cmd ^ nearest_command).rstrip('0'), 2) if bin(cmd ^ nearest_command).rstrip('0') != '0b' else 0
     
-    def hamming_distance(self, n1: int, n2: int) -> int:
+    def calculate_hamming_distance(self, n1: int, n2: int) -> int:
         x = n1 ^ n2
         setBits = 0
     

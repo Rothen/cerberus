@@ -38,11 +38,11 @@ class TCSCommunicator(threading.Thread, ABC):
             cmd_event: CommandEvent = self._read_commmand()
 
             if cmd_event is not None:
-                if cmd_event.distance <= 3:
+                if cmd_event.hamming_distance <= 3 and cmd_event.distance == 3:
                     self.command_read.on_next(cmd_event)
                     self.write_to_log(cmd_event)
                 else:
-                    self.write_to_error(cmd_event)
+                    self.write_to_error_log(cmd_event)
 
                 print('TCS Bus Read %s (%s)' % (hex(cmd_event.cmd), hex(cmd_event.original_command)))
 
@@ -68,4 +68,4 @@ class TCSCommunicator(threading.Thread, ABC):
 
     def _write_to(self, cmd_event: CommandEvent, file_name: str) -> None:
         with open(file_name, "a") as log_file:
-            log_file.write("%s;%s;%s;%i;%i;%i;%i\n" % (datetime.now(), hex(cmd_event.original_command), hex(cmd_event.cmd), cmd_event.distance, cmd_event.crc, cmd_event.calc_crc, cmd_event.cmd_length))
+            log_file.write("%s;%s;%s;%i;%i;%i;%i;%i\n" % (datetime.now(), hex(cmd_event.original_command), hex(cmd_event.cmd), cmd_event.hamming_distance, cmd_event.distance, cmd_event.crc, cmd_event.calc_crc, cmd_event.cmd_length))

@@ -103,7 +103,7 @@ class WSWorker(threading.Thread):
         self.join()
 
     def command_read(self, command_event: CommandEvent) -> None:
-        self.send(hex(command_event.cmd))
+        self.send(WEB_SOCKET_COMMANDS[command_event.cmd])
 
     def send(self, data: str):
         print("WS Sending data: %s" % data)
