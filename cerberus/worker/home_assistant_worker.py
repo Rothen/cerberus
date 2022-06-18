@@ -14,7 +14,7 @@ class HomeAssistantWorker:
     _doorbell_media: dict
     _headers: dict
 
-    _requests: dict = HOME_ASSISTANT_COMMANDS
+    _requests: dict = {}
 
     def __init__(self, tcs_communicator: TCSCommunicator, url: str, api_token: str, google_home_entity_id: str, doorbell_media: dict):
         threading.Thread.__init__(self)
@@ -40,8 +40,8 @@ class HomeAssistantWorker:
         )
 
     def prepare_commands(self) -> None:
-        self._requests[RING_UPSTAIRS]['fn'] = self.send_ring_upstairs
-        self._requests[RING_DOWNSTAIRS]['fn'] = self.send_ring_downstairs
+        self._requests[RING_UPSTAIRS] = self.send_ring_upstairs
+        self._requests[RING_DOWNSTAIRS] = self.send_ring_downstairs
 
     def command_read(self, command_event: CommandEvent) -> None:
         command_value = command_event.cmd
@@ -50,7 +50,7 @@ class HomeAssistantWorker:
 
         print('Home Assistant Worker Recieved: %s' % (hex(command_value)))
         command = self._requests[command_value]
-        command['fn']()
+        command()
 
     def send_ring_upstairs(self) -> None:
         self.__ring(self._doorbell_media['downstairs'])

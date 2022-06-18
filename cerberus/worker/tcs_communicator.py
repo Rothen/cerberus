@@ -38,7 +38,7 @@ class TCSCommunicator(threading.Thread, ABC):
             cmd_event: CommandEvent = self._read_commmand()
 
             if cmd_event is not None:
-                if cmd_event.hamming_distance <= 3 and cmd_event.distance == 3:
+                if cmd_event.hamming_distance <= 3 and (cmd_event.distance == 3 or cmd_event.distance == 1):
                     self.command_read.on_next(cmd_event)
                     self.write_to_log(cmd_event)
                 else:

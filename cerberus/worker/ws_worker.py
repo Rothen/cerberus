@@ -23,7 +23,7 @@ class WSWorker(threading.Thread):
     _loop: asyncio.AbstractEventLoop
     _tcs_communicator: TCSCommunicator
 
-    _requests = {}
+    _requests: dict = {}
 
     def __init__(self, tcs_communicator: TCSCommunicator, ip: str = '0.0.0.0', port: int = 7700):
         threading.Thread.__init__(self)
@@ -46,13 +46,14 @@ class WSWorker(threading.Thread):
         self._loop.run_until_complete(self._ws_server)
 
     def prepare_commands(self) -> None:
-        self._requests['RING_UPSTAIRS'] = self.send_ring_upstairs
-        self._requests['RING_DOWNSTAIRS'] = self.send_ring_downstairs
-        self._requests['CANCEL_VOICE_CONTROL_SEQUENCE'] = self.send_cancel_voice_control_sequence
-        self._requests['CANCEL_CONTROL_SEQUENCE'] = self.send_cancel_control_sequence
-        self._requests['OPEN_DOOR'] = self.send_open_door
-        self._requests['OPEN_VOICE_CHANNEL'] = self.send_open_voice_channel
-        self._requests['CONTROL_SEQUENCE'] = self.send_control_sequence
+        self._requests[COMMANDS_TO_TEXT[RING_UPSTAIRS]] = self.send_ring_upstairs
+        self._requests[COMMANDS_TO_TEXT[RING_DOWNSTAIRS]] = self.send_ring_downstairs
+        self._requests[COMMANDS_TO_TEXT[CANCEL_VOICE_CONTROL_SEQUENCE]] = self.send_cancel_voice_control_sequence
+        self._requests[COMMANDS_TO_TEXT[CANCEL_CONTROL_SEQUENCE]] = self.send_cancel_control_sequence
+        self._requests[COMMANDS_TO_TEXT[CANCEL_RING_CONTROL_SEQUENCE]] = self.send_cancel_ring_control_sequence
+        self._requests[COMMANDS_TO_TEXT[OPEN_DOOR]] = self.send_open_door
+        self._requests[COMMANDS_TO_TEXT[OPEN_VOICE_CHANNEL]] = self.send_open_voice_channel
+        self._requests[COMMANDS_TO_TEXT[CONTROL_SEQUENCE]] = self.send_control_sequence
 
     def run(self):
         while not self._stop_flag:
@@ -103,7 +104,7 @@ class WSWorker(threading.Thread):
         self.join()
 
     def command_read(self, command_event: CommandEvent) -> None:
-        self.send(WEB_SOCKET_COMMANDS[command_event.cmd])
+        self.send(COMMANDS_TO_TEXT[command_event.cmd])
 
     def send(self, data: str):
         print("WS Sending data: %s" % data)
@@ -130,6 +131,9 @@ class WSWorker(threading.Thread):
         print("Writing " + hex(CANCEL_CONTROL_SEQUENCE))
         self._tcs_communicator.write(CANCEL_CONTROL_SEQUENCE)
 
+    def send_cancel_ring_control_sequence(self) -> None:
+        print("Writing " + hex(CANCEL_RING_CONTROL_SEQUENCE))
+        self._tcs_communicator.write(CANCEL_RING_CONTROL_SEQUENCE)
 
     def send_open_door(self) -> None:
         print("Writing " + hex(OPEN_DOOR))
