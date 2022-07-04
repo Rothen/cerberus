@@ -5,3 +5,8 @@ __pycache__/
 *.out
 *.o
 commands.log
+dist/
+api_tokens.pkl
+*.csv
+tests/test_ha_lib.py
+cerberus/const/secrets.py

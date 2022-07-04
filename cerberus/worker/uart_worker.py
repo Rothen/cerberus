@@ -1,6 +1,4 @@
 from serial import Serial
-import time
-from datetime import datetime
 import re
 
 from cerberus.command_event import CommandEvent
