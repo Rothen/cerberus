@@ -32,7 +32,7 @@ jobs:
           make
           python -m pip wheel -w dist .
 
-    # - name: Install pybind11
+    # - name: Install pybind11n
       # run: python3 -m pip install pybind11
 
     # - name: Install Wiring Pi
