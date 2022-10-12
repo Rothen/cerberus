@@ -20,7 +20,6 @@ jobs:
         arch: armv7
         distro: bullseye
 
-        # Set an output parameter `uname` for use in subsequent steps
         run: |
           apt update -y
           apt install -y sudo
@@ -37,18 +36,6 @@ jobs:
           make
           python3 -m pip wheel -w dist .
 
-    # - name: Install pybind11n
-      # run: python3 -m pip install pybind11
-
-    # - name: Install Wiring Pi
-      # run: sudo apt install -y libwiringpi-dev
-
-    # - name: Make
-      # run: make
-      
-    # - name: Build wheels
-      # run: python3 -m pip wheel -w dist .
-
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         path: ./dist/*.whl
