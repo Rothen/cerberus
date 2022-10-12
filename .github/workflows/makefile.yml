@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     
@@ -22,8 +22,6 @@ jobs:
 
         # Set an output parameter `uname` for use in subsequent steps
         run: |
-          uname -a
-          echo ::set-output name=uname::$(uname -a)
           apt update -y
           apt install -y sudo
           apt install -y python3
