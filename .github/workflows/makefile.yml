@@ -30,7 +30,7 @@ jobs:
           python3 -m pip install pybind11
           apt install -y git-core
           cd
-          git clone git://git.drogon.net/wiringPi
+          git clone https://github.com/WiringPi/WiringPi
           cd ~/wiringPi
           git pull origin
           cd ~/wiringPi
