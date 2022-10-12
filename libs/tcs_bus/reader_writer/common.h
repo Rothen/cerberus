@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <iostream>
 #include <wiringPi.h>
+#include <functional>
 #define byte uint8_t
 
 #define TCS_MSG_START_MS 6 // a new message

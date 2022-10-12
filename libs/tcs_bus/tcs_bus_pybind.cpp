@@ -1,4 +1,5 @@
 #include <pybind11/pybind11.h>
+#include <pybind11/functional.h>
 #include <wiringPi.h>
 #include "reader_writer/tcs_bus_reader.h"
 #include "reader_writer/tcs_bus_writer.h"
@@ -7,7 +8,10 @@ namespace py = pybind11;
 
 PYBIND11_MODULE(tcs_bus, m) {
     py::class_<TCSBusReader>(m, "TCSBusReader")
-        .def(py::init([](uint8_t readPin) { return new TCSBusReader(readPin); }))
+        .def(py::init([](uint8_t readPin, std::function<void(uint32_t, uint8_t, uint8_t, uint8_t)> &callback) {
+            TCSBusReader::m_callback = callback;
+            return new TCSBusReader(readPin);
+        }))
         .def("begin", &TCSBusReader::begin)
         .def("enable", &TCSBusReader::enable)
         .def("disable", &TCSBusReader::disable)

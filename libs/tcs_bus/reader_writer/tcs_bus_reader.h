@@ -44,6 +44,7 @@ public:
      * @param cmdLength the pointer where to write the length of the command to.
      */
     void read(uint32_t *cmd, uint8_t *curCrc, uint8_t *calcCrc, uint8_t *cmdLength);
+    static std::function<void (uint32_t, uint8_t, uint8_t, uint8_t)> m_callback;
 
 private:
     /**

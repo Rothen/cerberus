@@ -17,24 +17,20 @@ class TCSBusWorker(TCSCommunicator):
         self._tcs_bus_writer = tcs_bus_writer
 
     def start(self) -> None:
+        self._tcs_bus_reader.register_read_event_handler(self.on_command)
         print('Initializing TCS Bus Reader')
         self._tcs_bus_reader.begin()
         print('Initializing TCS Bus Writer')
         self._tcs_bus_writer.begin()
-        super().start()
+    
+    def stop(self) -> None:
+        super().stop()
+        self._tcs_bus_reader.disable()
 
-    def _read_commmand(self) -> CommandEvent:
-        if self._tcs_bus_reader.hasCommand():
-            return self.parse_command()
-        
-        return None
+    def _read_commmand(self, cmd: int, crc: int, calc_crc: int, cmd_length: int) -> CommandEvent:
+        return CommandEvent(cmd, crc, calc_crc, cmd_length)
 
     def _write_commmand(self, cmd: int) -> None:
         self._tcs_bus_reader.disable()
         self._tcs_bus_writer.write(cmd)
         self._tcs_bus_reader.enable()
-
-    def parse_command(self) -> CommandEvent:
-        cmd, crc, calc_crc, cmd_length = self._tcs_bus_reader.read()
-
-        return CommandEvent(cmd, crc, calc_crc, cmd_length)

@@ -1,11 +1,15 @@
 #include "tcs_bus_reader.h"
 
+void empty_fn(uint32_t a, uint8_t b, uint8_t c, uint8_t d){ }
+// std::function<void(uint32_t, uint8_t, uint8_t, uint8_t)>& f = {}
+
 volatile uint32_t TCSBusReader::s_cmd = 0;
 volatile uint8_t TCSBusReader::s_cmdLength = 0;
 volatile bool TCSBusReader::s_cmdReady = false;
 volatile uint8_t TCSBusReader::s_crc = 0;
 volatile uint8_t TCSBusReader::s_calcCrc = 0;
 volatile bool TCSBusReader::m_enabled = false;
+std::function<void(uint32_t, uint8_t, uint8_t, uint8_t)> TCSBusReader::m_callback = empty_fn;
 
 TCSBusReader::TCSBusReader(uint8_t readPin)
     : m_readPin(readPin)
@@ -168,5 +172,6 @@ void TCSBusReader::analyzeCMD()
         curCrc = 0;
         calcCrc = 0;
         curPos = 0;
+        m_callback(s_cmd, s_crc, s_calcCrc, s_cmdLength);
     }
 }
