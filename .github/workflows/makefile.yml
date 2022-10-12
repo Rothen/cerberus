@@ -12,10 +12,6 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v3
-
-    - uses: actions/setup-python@v4
-      with:
-        python-version: '3.10' 
     
     - uses: uraimo/run-on-arch-action@v2
       name: Run commands
@@ -28,6 +24,8 @@ jobs:
         run: |
           uname -a
           echo ::set-output name=uname::$(uname -a)
+          apt-get update
+          apt install python
           python -m pip install pybind11
           apt install -y libwiringpi
           make
