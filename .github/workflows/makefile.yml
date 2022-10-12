@@ -37,6 +37,7 @@ jobs:
           cd ~/WiringPi
           ./build
           cd
+          ls
           make
           python3 -m pip wheel -w dist .
 
