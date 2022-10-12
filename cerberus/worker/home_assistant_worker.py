@@ -17,8 +17,6 @@ class HomeAssistantWorker:
     _requests: dict = {}
 
     def __init__(self, tcs_communicator: TCSCommunicator, url: str, api_token: str, google_home_entity_id: str, doorbell_media: dict):
-        threading.Thread.__init__(self)
-
         self._tcs_communicator = tcs_communicator
         self._url = url
         if not self._url.endswith('/'):

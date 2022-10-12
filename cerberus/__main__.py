@@ -8,6 +8,7 @@ from cerberus.const import *
 from cerberus.tcs import TCSBusReader, TCSBusWriter, wiringPiSetupGpio
 from cerberus.worker import TCSTunnelWorker, WSWorker, TCSBusWorker, UARTWorker, HomeAssistantWorker
 import argparse
+import yaml
 
 def parse_arguments() -> argparse.Namespace:
     argparser = argparse.ArgumentParser(
@@ -46,6 +47,14 @@ def parse_arguments() -> argparse.Namespace:
     return argparser.parse_args()
 
 def main(args=None):
+    with open('config.yaml', 'r') as stream:
+        try:
+            config = yaml.safe_load(stream)
+            print('config.yaml loaded')
+        except yaml.YAMLError as exc:
+            config = {}
+            print('config.yaml not loaded')
+
     args = parse_arguments()
     GPIO.setmode(GPIO.BCM)
     wiringPiSetupGpio()
@@ -60,11 +69,11 @@ def main(args=None):
     ws_worker = WSWorker(uart_worker if use_uart else tcs_bus_worker, ip=args.listen, port=args.port)
     home_assistant_worker = HomeAssistantWorker(
         uart_worker if use_uart else tcs_bus_worker,
-        HOME_ASSISTANT_URL,
-        HOME_ASSISTANT_API_TOKEN,
-        HOME_ASSISTANT_GOOGLE_HOME_ENTITY_ID,
-        HOME_ASSISTAND_MEDIA
-    )
+        config['home_assistant']['url'],
+        config['home_assistant']['api_token'],
+        config['home_assistant']['google_home_entity_id'],
+        config['home_assistant']['media']
+    ) if 'home_assistant' in config else None
 
     def exit_signal_handler(sig, frame):
         if not use_uart:

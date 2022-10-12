@@ -9,4 +9,4 @@ dist/
 api_tokens.pkl
 *.csv
 tests/test_ha_lib.py
-cerberus/const/secrets.py
+config.yaml
