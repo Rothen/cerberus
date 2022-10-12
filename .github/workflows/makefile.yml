@@ -24,10 +24,11 @@ jobs:
         run: |
           uname -a
           echo ::set-output name=uname::$(uname -a)
-          python -m pip install pybind11
+          sudo apt install python3.7
+          python3.7 -m pip install pybind11
           sudo apt install -y libwiringpi
           make
-          python -m pip wheel -w dist .
+          python3.7 -m pip wheel -w dist .
 
     # - name: Install pybind11
       # run: python3 -m pip install pybind11
