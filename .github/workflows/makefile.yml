@@ -27,10 +27,10 @@ jobs:
           apt update -y
           apt install -y python3
           apt install -y python3-pip
-          python -m pip install pybind11
+          python3 -m pip install pybind11
           apt install -y libwiringpi
           make
-          python -m pip wheel -w dist .
+          python3 -m pip wheel -w dist .
 
     # - name: Install pybind11n
       # run: python3 -m pip install pybind11
