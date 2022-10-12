@@ -31,7 +31,10 @@ jobs:
           python3 -m pip install pybind11
           apt install -y git-core
           git clone https://github.com/WiringPi/WiringPi
-          ./WiringPi/build
+          cd WiringPi
+          git pull origin
+          ./build
+          cd ..
           ls
           make
           python3 -m pip wheel -w dist .
