@@ -24,8 +24,8 @@ jobs:
         run: |
           uname -a
           echo ::set-output name=uname::$(uname -a)
-          apt-get update
-          apt install python
+          apt update -y
+          apt install -y python
           python -m pip install pybind11
           apt install -y libwiringpi
           make
