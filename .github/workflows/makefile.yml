@@ -28,7 +28,13 @@ jobs:
           apt install -y python3
           apt install -y python3-pip
           python3 -m pip install pybind11
-          apt install -y libwiringpi
+          apt install -y git-core
+          cd
+          git clone git://git.drogon.net/wiringPi
+          cd ~/wiringPi
+          git pull origin
+          cd ~/wiringPi
+          ./build
           make
           python3 -m pip wheel -w dist .
 
