@@ -25,6 +25,7 @@ jobs:
           uname -a
           echo ::set-output name=uname::$(uname -a)
           apt update -y
+          apt install -y sudo
           apt install -y python3
           apt install -y python3-pip
           python3 -m pip install pybind11
