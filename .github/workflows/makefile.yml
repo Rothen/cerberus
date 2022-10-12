@@ -31,9 +31,9 @@ jobs:
           apt install -y git-core
           cd
           git clone https://github.com/WiringPi/WiringPi
-          cd ~/wiringPi
+          cd ~/WiringPi
           git pull origin
-          cd ~/wiringPi
+          cd ~/WiringPi
           ./build
           make
           python3 -m pip wheel -w dist .
