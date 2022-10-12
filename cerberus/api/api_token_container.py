@@ -12,8 +12,6 @@ class APITokenContainer:
 
         self.__load()
 
-        # print(self.__api_tokens)
-
     def __add(self, name: str, prefix: str, hash: str) -> None:
         self.__api_tokens[hash] = {
             'name': name,
