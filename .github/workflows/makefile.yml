@@ -36,6 +36,7 @@ jobs:
           git pull origin
           cd ~/WiringPi
           ./build
+          cd
           make
           python3 -m pip wheel -w dist .
 
