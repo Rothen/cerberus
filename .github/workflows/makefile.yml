@@ -18,7 +18,7 @@ jobs:
       id: runcmd
       with:
         arch: armv7
-        distro: ubuntu18.04
+        distro: bullseye
 
         # Set an output parameter `uname` for use in subsequent steps
         run: |
