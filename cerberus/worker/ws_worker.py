@@ -4,6 +4,7 @@ from reactivex import Subject
 import websockets
 import asyncio
 import time
+from urllib.parse import parse_qs
 
 from cerberus.api import APITokenContainer
 from cerberus.const import *
@@ -54,20 +55,15 @@ class WSWorker:
         self._loop.run_until_complete(self._ws_server)
 
     async def handler(self, websocket, path: str):
-        try:
-            api_token = await asyncio.wait_for(websocket.recv(), timeout=5)
+        params = parse_qs(path[path.find('?')+1:])
 
-            if not self._api_token_container.check(api_token):
-                print('API Token not registered.')
-                await websocket.close(1008, 'API Token not registered.')
-                return
-
-            self._connected.add(websocket)
-            print('API Token registered.')
-        except asyncio.exceptions.TimeoutError:
-            print('API Token not delivered.')
-            await websocket.close(1008, 'API Token not delivered.')
+        if 'api_token' not in params or not self._api_token_container.check(params['api_token'][0]):
+            print('API Token not registered.')
+            await websocket.close(1008, 'API Token not registered.')
             return
+
+        self._connected.add(websocket)
+        print('API Token registered.')
 
         try:
             while True:
