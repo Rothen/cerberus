@@ -8,6 +8,7 @@ volatile byte TCSBusReader::s_calCRC = 0;
 
 void printHEX(uint32_t data)
 {
+    Serial.print("0x");
     uint8_t numChars = data > 0xFFFF ? 8 : 4;
     uint32_t mask = 0x0000000F;
     mask = mask << 4 * (numChars - 1);
@@ -16,6 +17,7 @@ void printHEX(uint32_t data)
         Serial.print(((data & mask) >> (i - 1) * 4), HEX);
         mask = mask >> 4;
     }
+    Serial.print("\n");
 }
 
 TCSBusReader::TCSBusReader(uint8_t readPin)

@@ -7,56 +7,141 @@ uint32_t s_cmd = 0;
 byte s_curCRC = 0;
 byte s_calCRC = 0;
 
+// Replace with your network credentials
+const char *ssid = SSID;
+const char *password = PASSWORD;
+
+// Create AsyncWebServer object on port 80
+AsyncWebServer server(80);
+AsyncWebSocket ws("/ws");
+
+std::set<uint32_t> connectedClients = {};
+std::set<uint32_t> loggedInClients = {};
+
+String apiKey = API_KEY; // 278823297
+
 void setup()
 {
-    Serial.begin(9600);
-    Serial2.begin(9600, SERIAL_8N1, RXD2, TXD2);
+    Serial.begin(115200);
     tcsWriter.begin();
     tcsReader.begin();
+    setupWifi();
 }
 
 void loop()
 {
+    ws.cleanupClients();
+
     if (tcsReader.hasCommand())
     {
         tcsReader.read(&s_cmd, &s_curCRC, &s_calCRC);
-        log_read_command();
-        send_read_command();
+        notifyClients();
+        logReadCommand();
     }
+}
 
-    if (Serial2.available())
+void setupWifi()
+{
+    // Connect to Wi-Fi
+    WiFi.begin(ssid, password);
+    while (WiFi.status() != WL_CONNECTED)
     {
-        tcsReader.disable();
+        delay(1000);
+        Serial.println("Connecting to WiFi..");
+        Serial1.println("Connecting to WiFi..");
+    }
 
-        String incomingString = Serial2.readStringUntil('\n');
-        uint32_t cmd = uint32_t(strtoul(incomingString.c_str(), NULL, 16));
+    // Print ESP Local IP Address
+    Serial.println(WiFi.localIP());
 
-        log_write_command(cmd);
+    setupWebSocketServer();
 
-        tcsWriter.write(cmd);
-        tcsReader.enable();
+    // Start server
+    server.begin();
+}
+
+void logReadCommand()
+{
+    Serial.print("Read command: ");
+    printHEX(s_cmd);
+}
+
+void logWriteCommand(uint32_t cmd)
+{
+    Serial.print("Write command: ");
+    printHEX(cmd);
+}
+
+void notifyClients()
+{
+    ws.textAll(String(s_cmd) + "," + String(s_curCRC) + "," + String(s_calCRC));
+}
+
+void login(AsyncWebSocketClient *client, void *arg, uint8_t *data, size_t len)
+{
+    AwsFrameInfo *info = (AwsFrameInfo *)arg;
+    if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT)
+    {
+        data[len] = 0;
+        String sentApiKey = String((char *)data);
+
+        if (sentApiKey == apiKey)
+        {
+            loggedInClients.insert(client->id());
+            Serial.printf("API Key is correct for client #%u\n", client->id());
+        }
+        else
+        {
+            Serial.printf("API Key is wrong for client #%u\n", client->id());
+        }
     }
 }
 
-void log_read_command()
+void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 {
-    Serial.println("Read command: ");
-    print_hex(s_cmd, Serial);
+    AwsFrameInfo *info = (AwsFrameInfo *)arg;
+    if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT)
+    {
+        data[len] = 0;
+        uint32_t transmittedCmd = String((char *)data).toInt();
+        tcsReader.disable();
+        tcsWriter.write(transmittedCmd);
+        tcsReader.enable();
+        logWriteCommand(transmittedCmd);
+    }
 }
 
-void log_write_command(uint32_t cmd)
+void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len)
 {
-    Serial.println("Write command: ");
-    print_hex(cmd, Serial);
+    switch (type)
+    {
+    case WS_EVT_CONNECT:
+        Serial.printf("WebSocket client #%u connected from %s\n", client->id(), client->remoteIP().toString().c_str());
+        connectedClients.insert(client->id());
+        break;
+    case WS_EVT_DISCONNECT:
+        Serial.printf("WebSocket client #%u disconnected\n", client->id());
+        connectedClients.erase(client->id());
+        loggedInClients.erase(client->id());
+        break;
+    case WS_EVT_DATA:
+        if (loggedInClients.find(client->id()) == loggedInClients.end())
+        {
+            login(client, arg, data, len);
+        }
+        else
+        {
+            handleWebSocketMessage(arg, data, len);
+        }
+        break;
+    case WS_EVT_PONG:
+    case WS_EVT_ERROR:
+        break;
+    }
 }
 
-void send_read_command()
+void setupWebSocketServer()
 {
-    Serial2.print("GOT: 0x");
-    print_hex(s_cmd, Serial2);
-    Serial2.print(", CRC: ");
-    Serial2.print(s_curCRC);
-    Serial2.print(", CALC_CRC: ");
-    Serial2.print(s_calCRC);
-    Serial2.println();
+    ws.onEvent(onEvent);
+    server.addHandler(&ws);
 }

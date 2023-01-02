@@ -54,14 +54,6 @@ public:
      */
     uint32_t read(uint32_t *cmd, byte *curCRC, byte *calCRC);
 
-    /**
-     * @brief Injects a command into the reader that can be read from it directly
-     * without being read from the bus.
-     *
-     * @param cmd the command to inject
-     */
-    void inject(uint32_t cmd);
-
 private:
     /**
      * @brief The interrupt method that counts the time for each high
