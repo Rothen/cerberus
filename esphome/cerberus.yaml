@@ -1,5 +1,15 @@
 esphome:
   name: cerberus
+  includes:
+    - tcs_bus.h
+    - cerberus.h
+
+custom_component:
+- lambda: |-
+    auto cerberus = new Cerberus();
+    return {cerberus};
+  components:
+  - id: my_custom_id
 
 esp8266:
   board: esp01_1m
