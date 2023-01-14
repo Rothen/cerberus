@@ -10,3 +10,5 @@ api_tokens.pkl
 *.csv
 tests/test_ha_lib.py
 config.yaml
+*.log
+web_socket_client.py

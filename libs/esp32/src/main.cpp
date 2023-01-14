@@ -18,7 +18,7 @@ AsyncWebSocket ws("/ws");
 std::set<uint32_t> connectedClients = {};
 std::set<uint32_t> loggedInClients = {};
 
-String apiKey = API_KEY; // 278823297
+String apiKey = API_KEY;
 
 void setup()
 {
@@ -42,7 +42,6 @@ void loop()
 
 void setupWifi()
 {
-    // Connect to Wi-Fi
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED)
     {
@@ -50,14 +49,11 @@ void setupWifi()
         Serial.println("Connecting to WiFi..");
         Serial1.println("Connecting to WiFi..");
     }
+    WiFi.setAutoReconnect(true);
+    WiFi.persistent(true);
 
-    // Print ESP Local IP Address
     Serial.println(WiFi.localIP());
-
     setupWebSocketServer();
-
-    // Start server
-    server.begin();
 }
 
 void logReadCommand()
@@ -144,4 +140,5 @@ void setupWebSocketServer()
 {
     ws.onEvent(onEvent);
     server.addHandler(&ws);
+    server.begin();
 }
