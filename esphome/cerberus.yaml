@@ -1,8 +1,9 @@
 esphome:
-  name: cerberus
+  name: "cerberus"
   includes:
-    - tcs_bus.h
-    - cerberus.h
+    - cerberus/gpio.h
+    - cerberus/tcs_bus.h
+    - cerberus/cerberus.h
 
 custom_component:
 - lambda: |-
@@ -28,5 +29,7 @@ wifi:
   ap:
     ssid: "Esphome-Web-03Edeb"
     password: "sp9GO5BhJkt6"
+
+  use_address: "192.168.1.67"
 
 captive_portal:

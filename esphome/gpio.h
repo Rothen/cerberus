@@ -1,0 +1,19 @@
+#define GPIO16 16
+#define GPIO5 5
+#define GPIO4 4
+#define GPIO0 0
+#define GPIO2 2
+#define GPIO14 14
+#define GPIO12 12
+#define GPIO13 13
+#define GPIO15 15
+
+#define D0 GPIO16
+#define D1 GPIO5
+#define D2 GPIO4
+#define D3 GPIO0
+#define D4 GPIO2
+#define D5 GPIO14
+#define D6 GPIO12
+#define D7 GPIO13
+#define D8 GPIO15

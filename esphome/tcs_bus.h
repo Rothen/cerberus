@@ -1,4 +1,4 @@
-#include "esphome.h"
+#pragma once
 
 #define TCS_MSG_START_MS 6 // a new message
 #define TCS_ONE_BIT_MS 4   // a 1-bit is 4ms long
@@ -9,21 +9,19 @@
  *
  * @param data the data to print
  */
-String printHEX(uint32_t data)
+void printHEX(uint32_t data)
 {
-    String hexString("0x");
-
+    Serial.print("0x");
     uint8_t numChars = data > 0xFFFF ? 8 : 4;
     uint32_t mask = 0x0000000F;
     mask = mask << 4 * (numChars - 1);
     for (uint32_t i = numChars; i > 0; --i)
     {
-        hexString += String(((data & mask) >> (i - 1) * 4), HEX);
+        Serial.print(((data & mask) >> (i - 1) * 4), HEX);
         mask = mask >> 4;
     }
-
-    return hexString
-};
+    Serial.print("\n");
+}
 
 class TCSBusReader
 {
@@ -33,9 +31,7 @@ public:
      *
      * @param readPin the pin that is connected to the data line of the TCS bus.
      */
-    TCSBusReader(uint8_t readPin)
-        : m_readPin(readPin),
-          m_enabled(false)
+    TCSBusReader(uint8_t readPin) : m_readPin(readPin), m_enabled(false)
     {
     }
 
@@ -90,15 +86,15 @@ public:
      *
      * @return uint32_t the last command from the bus
      */
-    uint32_t read(uint32_t *cmd, char *curCRC, char *calCRC)
+    uint32_t read(uint32_t *cmd, byte *curCRC, byte *calCRC)
     {
         if (!s_cmdReady)
         {
             return 0;
         }
         uint32_t tmp_cmd = s_cmd;
-        char tmp_curCRC = s_curCRC;
-        char tmp_calCRC = s_calCRC;
+        byte tmp_curCRC = s_curCRC;
+        byte tmp_calCRC = s_calCRC;
 
         s_cmdReady = false;
 
@@ -120,15 +116,15 @@ private:
         // TODO extract these to members
         static uint32_t curCMD;
         static uint32_t usLast;
-        static char curCRC;
-        static char calCRC;
-        static char curLength;
-        static char cmdIntReady;
-        static char curPos;
+        static byte curCRC;
+        static byte calCRC;
+        static byte curLength;
+        static byte cmdIntReady;
+        static byte curPos;
         uint32_t usNow = micros();
         uint32_t timeInUS = usNow - usLast;
         usLast = usNow;
-        char curBit = 4;
+        byte curBit = 4;
         if (timeInUS >= 1000 && timeInUS <= 2999)
         {
             curBit = 0;
@@ -225,14 +221,20 @@ private:
         }
     }
 
-    static volatile uint32_t s_cmd = 0;
-    static volatile uint8_t s_cmdLength = 0;
-    static volatile bool s_cmdReady = false;
-    static volatile char s_curCRC = 0;
-    static volatile char s_calCRC = 0;
+    static volatile uint32_t s_cmd;
+    static volatile uint8_t s_cmdLength;
+    static volatile bool s_cmdReady;
+    static volatile byte s_curCRC;
+    static volatile byte s_calCRC;
     uint8_t m_readPin;
     bool m_enabled;
 };
+
+volatile uint32_t TCSBusReader::s_cmd = 0;
+volatile uint8_t TCSBusReader::s_cmdLength = 0;
+volatile bool TCSBusReader::s_cmdReady = false;
+volatile byte TCSBusReader::s_curCRC = 0;
+volatile byte TCSBusReader::s_calCRC = 0;
 
 class TCSBusWriter
 {
@@ -242,7 +244,7 @@ public:
      *
      * @param writePin the pin on which the bus cable is connected.
      */
-    TCSBusWriter(uint8_t writePin): m_writePin(writePin), m_writing(false)
+    TCSBusWriter(uint8_t writePin) : m_writePin(writePin), m_writing(false)
     {
     }
 
