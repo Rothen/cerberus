@@ -11,75 +11,113 @@
 #define OPEN_VOICE_CHANNEL 0x309E8100
 #define CONTROL_SEQUENCE 0x5802
 
-class Cerberus : public Component
+class Cerberus : public Component, public CustomAPIDevice
 {
-public:
-    TCSBusReader tcsReader = TCSBusReader(D2);
-    TCSBusWriter tcsWriter = TCSBusWriter(D1);
+    public:
+        TCSBusReader tcsReader = TCSBusReader(D2);
+        TCSBusWriter tcsWriter = TCSBusWriter(D1);
 
-    uint32_t s_cmd = 0;
-    byte s_curCRC = 0;
-    byte s_calCRC = 0;
+        uint32_t s_cmd = 0;
+        byte s_curCRC = 0;
+        byte s_calCRC = 0;
 
-    void setup() override
-    {
-        tcsWriter.begin();
-        tcsReader.begin();
-    }
-
-    void loop() override
-    {
-        if (tcsReader.hasCommand())
+        void setup() override
         {
-            tcsReader.read(&s_cmd, &s_curCRC, &s_calCRC);
+            tcsWriter.begin();
+            tcsReader.begin();
 
-            switch (s_cmd)
+            register_service(&Cerberus::onOpenDoor, "open_door");
+            register_service(&Cerberus::onStartWasherCycle, "start_washer_cycle", {"cycle_duration", "silent", "string_argument"});
+            subscribe_homeassistant_state(&Cerberus::onStateChanged, "sensor.temperature");
+        }
+
+        void loop() override
+        {
+            if (tcsReader.hasCommand())
             {
-            case RING_UPSTAIRS:
-                onRingUpstairs() break;
-            case RING_DOWNSTAIRS:
-                onRingDownstairs() break;
-            case CANCEL_VOICE_CONTROL_SEQUENCE:
-                onCancelVoiceControlSequence() break;
-            case CANCEL_CONTROL_SEQUENCE:
-                onCancelControlSequence() break;
-            case CANCEL_RING_CONTROL_SEQUENCE:
-                onCancelRingControlSequence() break;
-            case CONTROL_SEQUENCE:
-                onControlSequence() break;
-            default:
-                ESP_LOGD("read comman", "Unknown command recieved %d (CRC: %d, Calc CRC: %d)", s_cmd, s_curCRC, s_calCRC);
+                tcsReader.read(&s_cmd, &s_curCRC, &s_calCRC);
+
+                switch (s_cmd)
+                {
+                case RING_UPSTAIRS:
+                    onRingUpstairs();
+                    break;
+                case RING_DOWNSTAIRS:
+                    onRingDownstairs();
+                    break;
+                case CANCEL_VOICE_CONTROL_SEQUENCE:
+                    onCancelVoiceControlSequence();
+                    break;
+                case CANCEL_CONTROL_SEQUENCE:
+                    onCancelControlSequence();
+                    break;
+                case CANCEL_RING_CONTROL_SEQUENCE:
+                    onCancelRingControlSequence();
+                    break;
+                case CONTROL_SEQUENCE:
+                    onControlSequence();
+                    break;
+                default:
+                    ESP_LOGD("read command", "Unknown command recieved %d (CRC: %d, Calc CRC: %d)", s_cmd, s_curCRC, s_calCRC);
+                }
+            }
+
+            if (is_connected()) {
+                // Example check to see if a client is connected
             }
         }
-    }
+        void onOpenDoor()
+        {
+            ESP_LOGD("custom", "Hello World!");
 
-    void onRingUpstairs()
-    {
-        ESP_LOGD("read comman", "Recieved RING_UPSTAIRS command (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
-    }
+            if (is_connected()) {
+            // Example check to see if a client is connected
+            }
+        }
+        void onStartWasherCycle(int cycle_duration, bool silent, std::string string_argument)
+        {
+            ESP_LOGD("custom", "Starting washer cycle!");
+            tcsReader.disable();
+            tcsWriter.write(OPEN_DOOR);
+            tcsReader.enable();
+            // do something with arguments
 
-    void onRingDownstairs()
-    {
-        ESP_LOGD("read comman", "Recieved RING_DOWNSTAIRS command (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
-    }
+            // Call a homeassistant service
+            call_homeassistant_service("homeassistant.service");
+        }
 
-    void onCancelVoiceControlSequence()
-    {
-        ESP_LOGD("read comman", "Recieved CANCEL_VOICE_CONTROL_SEQUENCE command (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
-    }
+        void onStateChanged(std::string state)
+        {
+            ESP_LOGD("state changed", "Temperature has changed to %s", state.c_str());
+        }
 
-    void onCancelControlSequence()
-    {
-        ESP_LOGD("read comman", "Recieved CANCEL_CONTROL_SEQUENCE command (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
-    }
+        void onRingUpstairs()
+        {
+            ESP_LOGD("read command", "Recieved RING_UPSTAIRS command (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
+        }
 
-    void onCancelRingControlSequence()
-    {
-        ESP_LOGD("read comman", "Recieved CANCEL_RING_CONTROL_SEQUENCE command (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
-    }
+        void onRingDownstairs()
+        {
+            ESP_LOGD("read command", "Recieved RING_DOWNSTAIRS command (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
+        }
 
-    void onControlSequence()
-    {
-        ESP_LOGD("read comman", "Recieved CONTROL_SEQUENCE command (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
-    }
+        void onCancelVoiceControlSequence()
+        {
+            ESP_LOGD("read command", "Recieved CANCEL_VOICE_CONTROL_SEQUENCE command (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
+        }
+
+        void onCancelControlSequence()
+        {
+            ESP_LOGD("read command", "Recieved CANCEL_CONTROL_SEQUENCE command (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
+        }
+
+        void onCancelRingControlSequence()
+        {
+            ESP_LOGD("read command", "Recieved CANCEL_RING_CONTROL_SEQUENCE command (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
+        }
+
+        void onControlSequence()
+        {
+            ESP_LOGD("read command", "Recieved CONTROL_SEQUENCE command (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
+        }
 };
