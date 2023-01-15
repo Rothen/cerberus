@@ -1,3 +1,8 @@
+#pragma once
+
+#ifndef CERBERUS_H
+#define CERBERUS_H
+
 #include "gpio.h"
 #include "esphome.h"
 #include "tcs_bus.h"
@@ -148,3 +153,5 @@ class Cerberus : public Component
             ESP_LOGD("read command", "Recieved CONTROL_SEQUENCE command (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
         }
 };
+
+#endif
