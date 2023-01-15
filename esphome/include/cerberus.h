@@ -7,7 +7,10 @@
 #include "esphome.h"
 #include "tcs_bus.h"
 
-#define getCerberus(constructor) static_cast<Cerberus *>((&constructor)->get_component(0))
+using namespace esphome;
+using namespace esphome::binary_sensor;
+
+#define getCerberus(constructor) static_cast<Cerberus *>(const_cast<custom_component::CustomComponentConstructor *>(&constructor)->get_component(0))
 
 #define RING_UPSTAIRS 0x109E8141
 #define RING_DOWNSTAIRS 0x009E8180 // 0x009E8181 0x009E8182
@@ -18,8 +21,6 @@
 #define OPEN_VOICE_CHANNEL 0x309E8100
 #define CONTROL_SEQUENCE 0x5802
 
-using namespace esphome;
-using namespace esphome::binary_sensor;
 
 class Cerberus : public Component
 {

@@ -3,15 +3,13 @@
         {
             "name": "Mac",
             "includePath": [
-                // "/srv/esphome/lib/python3.10/site-packages"
-                "../lib/ArduinoPure/tools/avr/lib/avr/include",
-                "../lib/avr-libc/avr-libc/include",
-                "../lib/ArduinoCore-avr/variants/standard/",
-                "../lib/ArduinoCore-avr/cores/arduino",
-                "../lib/noise-c/include",
-                "../lib/esphome",
-                "../lib"
-                // "/home/homeassistant/.homeassistant/esphome/.esphome/build/cerberus/src"
+                "/srv/esphome_lib/ArduinoPure/tools/avr/lib/avr/include",
+                "/srv/esphome_lib/avr-libc/avr-libc/include",
+                "/srv/esphome_lib/ArduinoCore-avr/variants/standard",
+                "/srv/esphome_lib/ArduinoCore-avr/cores/arduino",
+                "/srv/esphome_lib/noise-c/include",
+                "/srv/esphome_lib/esphome",
+                "/srv/esphome_lib"
             ],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "c11",
