@@ -43,11 +43,16 @@ class Cerberus : public Component
         bool cancelRingControlSequence = false;
         bool controlSequence = false;
 
+        bool partyMode = false;
+
         unsigned long previousMillis = 0UL;
         unsigned long interval = 1000UL;
 
         void setup() override;
         void loop() override;
+
+        bool anySensorTrue();
+
         void onOpenDoor();
         void onStateChanged(std::string state);
 

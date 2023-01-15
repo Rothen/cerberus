@@ -10,7 +10,8 @@ void Cerberus::setup()
 
 void Cerberus::loop()
 {
-    if (ringingUpstairs or ringingDownstairs) {
+    if (anySensorTrue())
+    {
         unsigned long currentMillis = esphome::millis();
 
         if(currentMillis - previousMillis > interval)
@@ -20,7 +21,9 @@ void Cerberus::loop()
 
             previousMillis = currentMillis;
         }
-    } else {
+    }
+    else
+    {
         previousMillis = 0;
     }
 
@@ -52,6 +55,16 @@ void Cerberus::loop()
             ESP_LOGD("read command", "Unknown command recieved %d (CRC: %d, Calc CRC: %d)", s_cmd, s_curCRC, s_calCRC);
         }
     }
+}
+
+bool Cerberus::anySensorTrue()
+{
+    return ringingUpstairs ||
+        ringingDownstairs ||
+        cancelVoiceControlSequence ||
+        cancelControlSequence ||
+        cancelRingControlSequence ||
+        controlSequence;
 }
 
 void Cerberus::onOpenDoor()

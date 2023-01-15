@@ -19,6 +19,20 @@ button:
       then:
         lambda: getCerberus(cerberus)->onOpenDoor();
 
+switch:
+  - platform: template
+    name: Party Mode
+    id: cerberus_party_mode
+    icon: "mdi:key"
+    lambda: |-
+      return getCerberus(cerberus)->partyMode;
+    turn_on_action:
+      then:
+        lambda: getCerberus(cerberus)->partyMode = true;
+    turn_off_action:
+      then:
+        lambda: getCerberus(cerberus)->partyMode = false;
+
 binary_sensor:
   - platform: custom
     lambda: |-
