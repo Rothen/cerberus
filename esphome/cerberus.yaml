@@ -1,9 +1,8 @@
 esphome:
   name: cerberus
   includes:
-    - cerberus/esphome/gpio.h
-    - cerberus/esphome/tcs_bus.h
-    - cerberus/esphome/cerberus.h
+    - cerberus/esphome/include
+    - cerberus/esphome/src
 
 custom_component:
 - id: cerberus
@@ -15,7 +14,7 @@ button:
   - platform: template
     name: Open Door
     id: open_door
-    icon: "mdi:emoticon-outline"
+    icon: "mdi:key"
     on_press:
       then:
         lambda: getCerberus(cerberus)->onOpenDoor();

@@ -1,4 +1,4 @@
-#include "tcs_bus.h"
+#include "../include/tcs_bus.h"
 
 TCSBusWriter::TCSBusWriter(uint8_t writePin) : m_writePin(writePin), m_writing(false)
 {

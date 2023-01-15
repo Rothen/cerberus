@@ -1,4 +1,4 @@
-#include "tcs_bus.h"
+#include "../include/tcs_bus.h"
 
 volatile uint32_t TCSBusReader::s_cmd = 0;
 volatile uint8_t TCSBusReader::s_cmdLength = 0;
