@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef TCS_BUS_H
-#define TCS_BUS_H
-
 #include <Arduino.h>
 
 #define TCS_MSG_START_MS 6 // a new message
@@ -113,4 +110,3 @@ private:
     uint8_t m_writePin;
     bool m_writing;
 };
-#endif

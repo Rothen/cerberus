@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef CERBERUS_H
-#define CERBERUS_H
-
 #include "gpio.h"
 #include "esphome.h"
 #include "tcs_bus.h"
@@ -54,5 +51,3 @@ class Cerberus : public Component
         void onCancelRingControlSequence();
         void onControlSequence();
 };
-
-#endif
