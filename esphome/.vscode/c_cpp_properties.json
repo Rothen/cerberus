@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                // "/srv/esphome/lib/python3.10/site-packages"
+                "../lib/ArduinoPure/tools/avr/lib/avr/include",
+                "../lib/avr-libc/avr-libc/include",
+                "../lib/ArduinoCore-avr/variants/standard/",
+                "../lib/ArduinoCore-avr/cores/arduino",
+                "../lib/noise-c/include",
+                "../lib/esphome",
+                "../lib"
+                // "/home/homeassistant/.homeassistant/esphome/.esphome/build/cerberus/src"
+            ],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}
