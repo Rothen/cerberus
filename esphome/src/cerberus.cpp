@@ -5,7 +5,7 @@ void Cerberus::setup()
     tcsWriter.begin();
     tcsReader.begin();
 
-    resetRingingSensors();
+    resetSensors();
 }
 
 void Cerberus::loop()
@@ -16,7 +16,7 @@ void Cerberus::loop()
         if(currentMillis - previousMillis > interval)
         {
             ESP_LOGD("read command", "Delay expired");
-            resetRingingSensors();
+            resetSensors();
 
             previousMillis = currentMillis;
         }
@@ -79,6 +79,30 @@ void Cerberus::setRingingDownstairs(bool ringingDownstairs)
     ringingDownstairsSensor->publish_state(ringingDownstairs);
 }
 
+void Cerberus::setCancelVoiceControlSequence(bool cancelVoiceControlSequence)
+{
+    this->cancelVoiceControlSequence = cancelVoiceControlSequence;
+    cancelVoiceControlSequenceSensor->publish_state(cancelVoiceControlSequence);
+}
+
+void Cerberus::setCancelControlSequence(bool cancelControlSequence)
+{
+    this->cancelControlSequence = cancelControlSequence;
+    cancelControlSequenceSensor->publish_state(cancelControlSequence);
+}
+
+void Cerberus::setCancelRingControlSequence(bool cancelRingControlSequence)
+{
+    this->cancelRingControlSequence = cancelRingControlSequence;
+    cancelRingControlSequenceSensor->publish_state(cancelRingControlSequence);
+}
+
+void Cerberus::setControlSequence(bool controlSequence)
+{
+    this->controlSequence = controlSequence;
+    controlSequenceSensor->publish_state(controlSequence);
+}
+
 void Cerberus::onRingUpstairs()
 {
     ESP_LOGD("read command", "Recieved RING_UPSTAIRS command (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
@@ -91,28 +115,36 @@ void Cerberus::onRingDownstairs()
     setRingingDownstairs(true);
 }
 
-void Cerberus::resetRingingSensors()
-{
-    setRingingUpstairs(false);
-    setRingingDownstairs(false);
-}
-
 void Cerberus::onCancelVoiceControlSequence()
 {
     ESP_LOGD("read command", "Recieved CANCEL_VOICE_CONTROL_SEQUENCE command (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
+    setCancelVoiceControlSequence(true);
 }
 
 void Cerberus::onCancelControlSequence()
 {
     ESP_LOGD("read command", "Recieved CANCEL_CONTROL_SEQUENCE command (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
+    setCancelControlSequence(true);
 }
 
 void Cerberus::onCancelRingControlSequence()
 {
     ESP_LOGD("read command", "Recieved CANCEL_RING_CONTROL_SEQUENCE command (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
+    setCancelRingControlSequence(true);
 }
 
 void Cerberus::onControlSequence()
 {
     ESP_LOGD("read command", "Recieved CONTROL_SEQUENCE command (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
+    setControlSequence(true);
+}
+
+void Cerberus::resetSensors()
+{
+    setRingingUpstairs(false);
+    setRingingDownstairs(false);
+    setCancelVoiceControlSequence(false);
+    setCancelControlSequence(false);
+    setCancelRingControlSequence(false);
+    setControlSequence(false);
 }

@@ -31,8 +31,17 @@ class Cerberus : public Component
 
         BinarySensor *ringingUpstairsSensor = new BinarySensor();
         BinarySensor *ringingDownstairsSensor = new BinarySensor();
+        BinarySensor *cancelVoiceControlSequenceSensor = new BinarySensor();
+        BinarySensor *cancelControlSequenceSensor = new BinarySensor();
+        BinarySensor *cancelRingControlSequenceSensor = new BinarySensor();
+        BinarySensor *controlSequenceSensor = new BinarySensor();
+
         bool ringingUpstairs = false;
         bool ringingDownstairs = false;
+        bool cancelVoiceControlSequence = false;
+        bool cancelControlSequence = false;
+        bool cancelRingControlSequence = false;
+        bool controlSequence = false;
 
         unsigned long previousMillis = 0UL;
         unsigned long interval = 1000UL;
@@ -41,13 +50,20 @@ class Cerberus : public Component
         void loop() override;
         void onOpenDoor();
         void onStateChanged(std::string state);
+
         void setRingingUpstairs(bool ringingUpstairs);
         void setRingingDownstairs(bool ringingDownstairs);
+        void setCancelVoiceControlSequence(bool cancelVoiceControlSequence);
+        void setCancelControlSequence(bool cancelControlSequence);
+        void setCancelRingControlSequence(bool cancelRingControlSequence);
+        void setControlSequence(bool controlSequence);
+
         void onRingUpstairs();
         void onRingDownstairs();
-        void resetRingingSensors();
         void onCancelVoiceControlSequence();
         void onCancelControlSequence();
         void onCancelRingControlSequence();
         void onControlSequence();
+
+        void resetSensors();
 };
