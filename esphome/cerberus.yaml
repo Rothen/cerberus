@@ -1,16 +1,32 @@
 esphome:
-  name: "cerberus"
+  name: cerberus
   includes:
-    - cerberus/gpio.h
-    - cerberus/tcs_bus.h
-    - cerberus/cerberus.h
+    - cerberus/esphome/gpio.h
+    - cerberus/esphome/tcs_bus.h
+    - cerberus/esphome/cerberus.h
 
 custom_component:
-- lambda: |-
+- id: cerberus
+  lambda: |-
     auto cerberus = new Cerberus();
     return {cerberus};
-  components:
-  - id: my_custom_id
+
+button:
+  - platform: template
+    name: Open Door
+    id: open_door
+    icon: "mdi:emoticon-outline"
+    on_press:
+      then:
+        lambda: getCerberus(cerberus)->onOpenDoor();
+
+binary_sensor:
+  - platform: custom
+    lambda: |-
+      return {getCerberus(cerberus)->ringingDownstairsSensor, getCerberus(cerberus)->ringingUpstairsSensor};
+    binary_sensors:
+      - name: "Ringing Downstairs"
+      - name: "Ringing Upstairs"
 
 esp8266:
   board: esp01_1m
