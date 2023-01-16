@@ -1,5 +1,6 @@
 #pragma once
 
+#include "async_delay.h"
 #include "gpio.h"
 #include "esphome.h"
 #include "tcs_bus.h"
@@ -18,7 +19,6 @@ using namespace esphome::binary_sensor;
 #define OPEN_VOICE_CHANNEL 0x309E8100
 #define CONTROL_SEQUENCE 0x5802
 
-
 class Cerberus : public Component
 {
     public:
@@ -26,8 +26,8 @@ class Cerberus : public Component
         TCSBusWriter tcsWriter = TCSBusWriter(D1);
 
         uint32_t s_cmd = 0;
-        byte s_curCRC = 0;
-        byte s_calCRC = 0;
+        uint8_t s_curCRC = 0;
+        uint8_t s_calCRC = 0;
 
         BinarySensor *ringingUpstairsSensor = new BinarySensor();
         BinarySensor *ringingDownstairsSensor = new BinarySensor();
@@ -45,8 +45,7 @@ class Cerberus : public Component
 
         bool partyMode = false;
 
-        unsigned long previousMillis = 0UL;
-        unsigned long interval = 1000UL;
+        AsyncDelay delay;
 
         void setup() override;
         void loop() override;
@@ -56,6 +55,7 @@ class Cerberus : public Component
         void onOpenDoor();
         void onStateChanged(std::string state);
 
+        void set(bool &sensorState, BinarySensor *binarySensor, bool state);
         void setRingingUpstairs(bool ringingUpstairs);
         void setRingingDownstairs(bool ringingDownstairs);
         void setCancelVoiceControlSequence(bool cancelVoiceControlSequence);

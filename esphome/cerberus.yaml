@@ -23,7 +23,7 @@ switch:
   - platform: template
     name: Party Mode
     id: cerberus_party_mode
-    icon: "mdi:key"
+    icon: "mdi:gift"
     lambda: |-
       return getCerberus(cerberus)->partyMode;
     turn_on_action:

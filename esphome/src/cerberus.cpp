@@ -10,21 +10,10 @@ void Cerberus::setup()
 
 void Cerberus::loop()
 {
-    if (anySensorTrue())
+    if (anySensorTrue() && delay.isExpired())
     {
-        unsigned long currentMillis = esphome::millis();
-
-        if(currentMillis - previousMillis > interval)
-        {
-            ESP_LOGD("read command", "Delay expired");
-            resetSensors();
-
-            previousMillis = currentMillis;
-        }
-    }
-    else
-    {
-        previousMillis = 0;
+        ESP_LOGD("cerberus", "Delay expired");
+        resetSensors();
     }
 
     if (tcsReader.hasCommand())
@@ -80,40 +69,41 @@ void Cerberus::onStateChanged(std::string state)
     ESP_LOGD("state changed", "Temperature has changed to %s", state.c_str());
 }
 
+void Cerberus::set(bool &sensorState, BinarySensor *binarySensor, bool state)
+{
+    sensorState = state;
+    binarySensor->publish_state(sensorState);
+    delay.start(1000, AsyncDelay::MILLIS);
+}
+
 void Cerberus::setRingingUpstairs(bool ringingUpstairs)
 {
-    this->ringingUpstairs = ringingUpstairs;
-    ringingUpstairsSensor->publish_state(ringingUpstairs);
+    set(this->ringingUpstairs, ringingUpstairsSensor, ringingUpstairs);
 }
 
 void Cerberus::setRingingDownstairs(bool ringingDownstairs)
 {
-    this->ringingDownstairs = ringingDownstairs;
-    ringingDownstairsSensor->publish_state(ringingDownstairs);
+    set(this->ringingDownstairs, ringingDownstairsSensor, ringingDownstairs);
 }
 
 void Cerberus::setCancelVoiceControlSequence(bool cancelVoiceControlSequence)
 {
-    this->cancelVoiceControlSequence = cancelVoiceControlSequence;
-    cancelVoiceControlSequenceSensor->publish_state(cancelVoiceControlSequence);
+    set(this->cancelVoiceControlSequence, cancelVoiceControlSequenceSensor, cancelVoiceControlSequence);
 }
 
 void Cerberus::setCancelControlSequence(bool cancelControlSequence)
 {
-    this->cancelControlSequence = cancelControlSequence;
-    cancelControlSequenceSensor->publish_state(cancelControlSequence);
+    set(this->cancelControlSequence, cancelControlSequenceSensor, cancelControlSequence);
 }
 
 void Cerberus::setCancelRingControlSequence(bool cancelRingControlSequence)
 {
-    this->cancelRingControlSequence = cancelRingControlSequence;
-    cancelRingControlSequenceSensor->publish_state(cancelRingControlSequence);
+    set(this->cancelRingControlSequence, cancelRingControlSequenceSensor, cancelRingControlSequence);
 }
 
 void Cerberus::setControlSequence(bool controlSequence)
 {
-    this->controlSequence = controlSequence;
-    controlSequenceSensor->publish_state(controlSequence);
+    set(this->controlSequence, controlSequenceSensor, controlSequence);
 }
 
 void Cerberus::onRingUpstairs()
