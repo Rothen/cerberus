@@ -11,52 +11,52 @@ custom_component:
     return {cerberus};
 
 button:
-  - platform: template
-    name: Open Door
-    id: cerberus_open_door
-    icon: "mdi:key"
-    on_press:
-      then:
-        lambda: getCerberus(cerberus)->onOpenDoor();
+- platform: template
+  name: Open Door
+  id: cerberus_open_door
+  icon: "mdi:key"
+  on_press:
+    then:
+      lambda: getCerberus(cerberus)->onOpenDoor();
 
-switch:
-  - platform: template
-    name: Party Mode
-    id: cerberus_party_mode
-    icon: "mdi:gift"
+select:
+- platform: template
+  name: Mode
+  id: mode
+  lambda: |-
+    return getCerberus(cerberus)->mode;
+  options:
+    - Normal
+    - Party
+    - Delivery
+  set_action:
     lambda: |-
-      return getCerberus(cerberus)->partyMode;
-    turn_on_action:
-      then:
-        lambda: getCerberus(cerberus)->partyMode = true;
-    turn_off_action:
-      then:
-        lambda: getCerberus(cerberus)->partyMode = false;
+      getCerberus(cerberus)->setMode(x);
 
 binary_sensor:
-  - platform: custom
-    lambda: |-
-      return {
-        getCerberus(cerberus)->ringingDownstairsSensor,
-        getCerberus(cerberus)->ringingUpstairsSensor,
-        getCerberus(cerberus)->cancelVoiceControlSequenceSensor,
-        getCerberus(cerberus)->cancelControlSequenceSensor,
-        getCerberus(cerberus)->cancelRingControlSequenceSensor,
-        getCerberus(cerberus)->controlSequenceSensor
-      };
-    binary_sensors:
-      - name: "Ringing Downstairs"
-        id: cerberus_ringing_downstairs
-      - name: "Ringing Upstairs"
-        id: cerberus_ringing_upstairs
-      - name: "Cancel Voice Control Sequence"
-        id: cerberus_cancel_voice_control_sequence
-      - name: "Cancel Control Sequence"
-        id: cerberus_cancel_control_sequence
-      - name: "Cancel Ring Control Sequence"
-        id: cerberus_cancel_ring_control_sequence
-      - name: "Control Sequence"
-        id: cerberus_control_sequence
+- platform: custom
+  lambda: |-
+    return {
+      getCerberus(cerberus)->ringingDownstairsSensor,
+      getCerberus(cerberus)->ringingUpstairsSensor,
+      getCerberus(cerberus)->cancelVoiceControlSequenceSensor,
+      getCerberus(cerberus)->cancelControlSequenceSensor,
+      getCerberus(cerberus)->cancelRingControlSequenceSensor,
+      getCerberus(cerberus)->controlSequenceSensor
+    };
+  binary_sensors:
+  - name: "Ringing Downstairs"
+    id: cerberus_ringing_downstairs
+  - name: "Ringing Upstairs"
+    id: cerberus_ringing_upstairs
+  - name: "Cancel Voice Control Sequence"
+    id: cerberus_cancel_voice_control_sequence
+  - name: "Cancel Control Sequence"
+    id: cerberus_cancel_control_sequence
+  - name: "Cancel Ring Control Sequence"
+    id: cerberus_cancel_ring_control_sequence
+  - name: "Control Sequence"
+    id: cerberus_control_sequence
 
 esp8266:
   board: esp01_1m
