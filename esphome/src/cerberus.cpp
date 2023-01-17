@@ -120,8 +120,23 @@ void Cerberus::onRingUpstairs()
 
 void Cerberus::onRingDownstairs()
 {
-    ESP_LOGD("read command", "Recieved RING_DOWNSTAIRS command (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
     setRingingDownstairs(true);
+
+    if (mode.compare("Delivery") == 0)
+    {
+        ESP_LOGD("read command", "Recieved RING_DOWNSTAIRS command in delivery mode (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
+        mode = std::string("Normal");
+        onOpenDoor();
+    }
+    else if (mode.compare("Party") == 0)
+    {
+        ESP_LOGD("read command", "Recieved RING_DOWNSTAIRS command in party mode (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
+        onOpenDoor();
+    }
+    else
+    {
+        ESP_LOGD("read command", "Recieved RING_DOWNSTAIRS command (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
+    }
 }
 
 void Cerberus::onCancelVoiceControlSequence()
