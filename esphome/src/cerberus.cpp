@@ -106,6 +106,12 @@ void Cerberus::setControlSequence(bool controlSequence)
     set(this->controlSequence, controlSequenceSensor, controlSequence);
 }
 
+void Cerberus::setMode(const std::string &mode)
+{
+    this->mode = mode;
+    ESP_LOGD("mode select", "Mode %s set", mode.c_str());
+}
+
 void Cerberus::onRingUpstairs()
 {
     ESP_LOGD("read command", "Recieved RING_UPSTAIRS command (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);

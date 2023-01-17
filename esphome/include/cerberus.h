@@ -7,6 +7,7 @@
 
 using namespace esphome;
 using namespace esphome::binary_sensor;
+using namespace esphome::select;
 
 #define getCerberus(constructor) static_cast<Cerberus *>(const_cast<custom_component::CustomComponentConstructor *>(&constructor)->get_component(0))
 
@@ -43,7 +44,7 @@ class Cerberus : public Component
         bool cancelRingControlSequence = false;
         bool controlSequence = false;
 
-        bool partyMode = false;
+        std::string mode = "Normal";
 
         AsyncDelay delay;
 
@@ -62,6 +63,7 @@ class Cerberus : public Component
         void setCancelControlSequence(bool cancelControlSequence);
         void setCancelRingControlSequence(bool cancelRingControlSequence);
         void setControlSequence(bool controlSequence);
+        void setMode(const std::string &mode);
 
         void onRingUpstairs();
         void onRingDownstairs();
@@ -69,6 +71,7 @@ class Cerberus : public Component
         void onCancelControlSequence();
         void onCancelRingControlSequence();
         void onControlSequence();
+
 
         void resetSensors();
 };
