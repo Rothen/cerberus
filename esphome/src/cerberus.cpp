@@ -48,9 +48,7 @@ void Cerberus::loop()
 
 bool Cerberus::anySensorTrue()
 {
-    return ringingUpstairs ||
-        ringingDownstairs ||
-        cancelVoiceControlSequence ||
+    return cancelVoiceControlSequence ||
         cancelControlSequence ||
         cancelRingControlSequence ||
         controlSequence;
@@ -122,13 +120,13 @@ void Cerberus::onRingDownstairs()
 {
     setRingingDownstairs(true);
 
-    if (mode.compare("Delivery") == 0)
+    if (mode.compare(std::string("Delivery")) == 0)
     {
         ESP_LOGD("read command", "Recieved RING_DOWNSTAIRS command in delivery mode (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
         mode = std::string("Normal");
         onOpenDoor();
     }
-    else if (mode.compare("Party") == 0)
+    else if (mode.compare(std::string("Party")) == 0)
     {
         ESP_LOGD("read command", "Recieved RING_DOWNSTAIRS command in party mode (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
         onOpenDoor();
@@ -155,6 +153,12 @@ void Cerberus::onCancelRingControlSequence()
 {
     ESP_LOGD("read command", "Recieved CANCEL_RING_CONTROL_SEQUENCE command (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
     setCancelRingControlSequence(true);
+    if (ringingDownstairs == true) {
+        setRingingDownstairs(false);
+    }
+    if (ringingUpstairs == true) {
+        setRingingUpstairs(false);
+    }
 }
 
 void Cerberus::onControlSequence()
@@ -165,8 +169,6 @@ void Cerberus::onControlSequence()
 
 void Cerberus::resetSensors()
 {
-    setRingingUpstairs(false);
-    setRingingDownstairs(false);
     setCancelVoiceControlSequence(false);
     setCancelControlSequence(false);
     setCancelRingControlSequence(false);
