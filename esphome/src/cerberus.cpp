@@ -10,7 +10,7 @@ void Cerberus::setup()
 
 void Cerberus::loop()
 {
-    if (anySensorTrue() && delay.isExpired())
+    if (anySensorTrue() && asyncDelay.isExpired())
     {
         ESP_LOGD("cerberus", "Delay expired");
         resetSensors();
@@ -73,7 +73,7 @@ void Cerberus::set(bool &sensorState, BinarySensor *binarySensor, bool state)
 {
     sensorState = state;
     binarySensor->publish_state(sensorState);
-    delay.start(1000, AsyncDelay::MILLIS);
+    asyncDelay.start(1000, AsyncDelay::MILLIS);
 }
 
 void Cerberus::setRingingUpstairs(bool ringingUpstairs)
@@ -126,11 +126,13 @@ void Cerberus::onRingDownstairs()
     {
         ESP_LOGD("read command", "Recieved RING_DOWNSTAIRS command in delivery mode (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
         mode = std::string("Normal");
+        esphome::delay(1000);
         onOpenDoor();
     }
     else if (mode.compare("Party") == 0)
     {
         ESP_LOGD("read command", "Recieved RING_DOWNSTAIRS command in party mode (CRC: %d, Calc CRC: %d)", s_curCRC, s_calCRC);
+        esphome::delay(1000);
         onOpenDoor();
     }
     else

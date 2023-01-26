@@ -46,7 +46,7 @@ class Cerberus : public Component
 
         std::string mode = "Normal";
 
-        AsyncDelay delay;
+        AsyncDelay asyncDelay;
 
         void setup() override;
         void loop() override;
